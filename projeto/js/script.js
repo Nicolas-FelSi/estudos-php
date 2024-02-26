@@ -37,6 +37,7 @@ $(document).ready(function () {
         const polyline = L.polyline(coordenadasArray, {color: 'red'}).addTo(map);
 
         map.fitBounds(polyline.getBounds());
+        chegada.openPopup();
       }
 
       criarMapa(dados)

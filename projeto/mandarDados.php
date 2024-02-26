@@ -23,7 +23,7 @@ try {
     // Obter os resultados como uma matriz associativa
     $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    array_shift($resultados);
+   
     
     // Retornar os resultados como JSON
     echo json_encode($resultados);

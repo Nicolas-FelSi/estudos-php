@@ -31,7 +31,7 @@ try {
     $sheet = $spreadsheet->getActiveSheet();
 
     $latitudeColumnIndex = -1;
-    $longitudeColumnIndex = -1;    
+    $longitudeColumnIndex = -1;
     $velocidadeColumnIndex = -1;
     $ignicaoColumnIndex = -1;
 
@@ -64,20 +64,26 @@ try {
     // Verifica se as colunas foram encontradas
     if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && $ignicaoColumnIndex !== -1) {
         // Itera pelas linhas para obter os dados e inseri-los no banco de dados
-        foreach ($sheet->getRowIterator() as $row) { 
+        foreach ($sheet->getRowIterator() as $row) {
+            
             $latitude = $sheet->getCell($latitudeColumnIndex . $row->getRowIndex())->getValue();
-            $latitude = str_replace(",", ".", $latitude);
             $longitude = $sheet->getCell($longitudeColumnIndex . $row->getRowIndex())->getValue();
-            $longitude = str_replace(",", ".", $longitude);
             $velocidade = $sheet->getCell($velocidadeColumnIndex . $row->getRowIndex())->getValue();
-            $velocidade = str_replace(",", ".", $velocidade);
             $ignicao = $sheet->getCell($ignicaoColumnIndex . $row->getRowIndex())->getValue();
 
-            if (!empty($latitude) && !empty($longitude) && !empty($velocidade) && !empty($ignicao)) {
-                // Insira os dados no banco de dados
+            if ($latitude == "Latitude" || $longitude == "Longitude" || $velocidade == "Velocidade (km/h)" || $ignicao == "Ignição") {
+                continue;
+            }
+
+            $latitude = str_replace(",", ".", $latitude);
+            $longitude = str_replace(",", ".", $longitude);
+            $velocidade = str_replace(",", ".", $velocidade);
+
+            if (!empty($latitude) && !empty($longitude) && !empty($ignicao)) {
+                // Insira os dados no banco de dados 
                 $stmt = $pdo->prepare("INSERT INTO coordenadas (latitude, longitude, velocidade, ignicao) VALUES (:latitude, :longitude, :velocidade, :ignicao)");
                 $stmt->bindParam(':latitude', $latitude);
-                $stmt->bindParam(':longitude', $longitude);                
+                $stmt->bindParam(':longitude', $longitude);
                 $stmt->bindParam(':velocidade', $velocidade);
                 $stmt->bindParam(':ignicao', $ignicao);
                 $stmt->execute();
