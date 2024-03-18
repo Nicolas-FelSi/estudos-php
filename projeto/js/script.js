@@ -7,12 +7,22 @@ $(document).ready(function () {
     success: function (dados) {
       let map;
 
+      function formatarData(dataString) {
+        return moment(dataString, "DD/MM/YYYY HH:mm:ss").toDate();
+      }
+
       function criarMapa(coordenadas) {
+
+        const primeiraLatitude = coordenadas[0].latitude
+        const primeiraLongitude = coordenadas[0].longitude
+        const ultimaLatitude = coordenadas[coordenadas.length - 1].latitude
+        const ultimaLongitude = coordenadas[coordenadas.length - 1].longitude
+
         if (map === undefined) {
-          map = L.map("map").setView([coordenadas[0].latitude, coordenadas[0].longitude], 13);
+          map = L.map("map").setView([primeiraLatitude, primeiraLongitude], 13);
         } else {
           map.remove();
-          map = L.map("map").setView([coordenadas[0].latitude, coordenadas[0].longitude], 13);
+          map = L.map("map").setView([primeiraLatitude, primeiraLongitude], 13);
         }
 
         L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -21,8 +31,8 @@ $(document).ready(function () {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map);
 
-        const partida = L.marker([coordenadas[0].latitude, coordenadas[0].longitude]).addTo(map);
-        const chegada = L.marker([coordenadas[coordenadas.length-1].latitude, coordenadas[coordenadas.length-1].longitude]).addTo(map);
+        const partida = L.marker([primeiraLatitude, primeiraLongitude]).addTo(map);
+        const chegada = L.marker([ultimaLatitude, ultimaLongitude]).addTo(map);
 
         const coordenadasArray = [];
 
@@ -32,9 +42,31 @@ $(document).ready(function () {
           coordenadasArray.push([latitude, longitude]);
         });
 
-        partida.bindPopup("Começou aqui.").openPopup();
-        chegada.bindPopup("Terminou aqui.").openPopup();
-        const polyline = L.polyline(coordenadasArray, {color: 'red'}).addTo(map);
+        const primeiraLinha = coordenadas[0].numero_linha;
+        const ultimaLinha = coordenadas[coordenadas.length - 1].numero_linha;
+
+        const primeiraDataHora = formatarData(coordenadas[0].data_hora);
+        const ultimaDataHora = formatarData(coordenadas[coordenadas.length - 1].data_hora);
+
+        const primeiraData = primeiraDataHora.toLocaleDateString();
+        const ultimaData = ultimaDataHora.toLocaleDateString();
+
+        const primeiraHoras = primeiraDataHora.toLocaleTimeString();
+        const ultimaHoras = ultimaDataHora.toLocaleTimeString();
+
+        partida.bindPopup(`
+        Data: ${primeiraData} -
+        Hora: ${primeiraHoras} -
+        Número da linha: ${primeiraLinha}
+        `).openPopup();
+
+        chegada.bindPopup(`
+        Data: ${ultimaData} -
+        Hora: ${ultimaHoras} -
+        Número da linha: ${ultimaLinha}
+        `).openPopup();
+
+        const polyline = L.polyline(coordenadasArray, { color: 'red' }).addTo(map);
 
         map.fitBounds(polyline.getBounds());
         chegada.openPopup();

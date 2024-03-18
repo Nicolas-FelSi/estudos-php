@@ -13,7 +13,7 @@ try {
 }
 
 // Consulta SQL para selecionar latitude e longitude
-$sql = "SELECT latitude, longitude FROM coordenadas";
+$sql = "SELECT latitude, longitude, data_hora, numero_linha FROM coordenadas";
 
 try {
     // Preparar e executar a consulta
@@ -21,9 +21,7 @@ try {
     $stmt->execute();
     
     // Obter os resultados como uma matriz associativa
-    $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-   
+    $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC); 
     
     // Retornar os resultados como JSON
     echo json_encode($resultados);
