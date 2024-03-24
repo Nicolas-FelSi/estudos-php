@@ -13,7 +13,7 @@ try {
 }
 
 // Consulta SQL para selecionar latitude e longitude
-$sql = "SELECT latitude, longitude, data_hora, numero_linha FROM coordenadas";
+$sql = "SELECT latitude, longitude, ignicao, data, hora, numero_linha FROM coordenadas";
 
 try {
     // Preparar e executar a consulta
@@ -32,5 +32,3 @@ try {
 // Fechar a conexão com o banco de dados
 $pdo = null;
 ?>
-
-

@@ -35,7 +35,7 @@ try {
     $longitudeColumnIndex = -1;
     $velocidadeColumnIndex = -1;
     $ignicaoColumnIndex = -1;
-    $dataHoraColumnIndex = -1;
+    $dataPosicaoColumnIndex = -1;
 
     //Itera pelas células de todas as linhas para encontrar as colunas necessárias
     foreach ($sheet->getRowIterator() as $row) {
@@ -54,19 +54,19 @@ try {
                 $velocidadeColumnIndex = $cell->getColumn();            
             } elseif (strpos($cellValue, 'ignição') !== false && $ignicaoColumnIndex == -1) {
                 $ignicaoColumnIndex = $cell->getColumn();
-            } elseif (strpos($cellValue, 'data da posição') !== false && $dataHoraColumnIndex == -1) {
-                $dataHoraColumnIndex = $cell->getColumn();  
+            } elseif (strpos($cellValue, 'data da posição') !== false && $dataPosicaoColumnIndex == -1) {
+                $dataPosicaoColumnIndex = $cell->getColumn();  
             }
         }
 
         // Se as colunas forem encontradas, pare de procurar
-        if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && $ignicaoColumnIndex !== -1 && $dataHoraColumnIndex !== -1) {
+        if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
             break;
         }
     }
 
     // Verifica se as colunas foram encontradas
-    if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && $ignicaoColumnIndex !== -1 && $dataHoraColumnIndex !== -1) {
+    if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
         // Itera pelas linhas para obter os dados e inseri-los no banco de dados
         foreach ($sheet->getRowIterator() as $row) {
             $numeroLinha = $row->getRowIndex();
@@ -75,27 +75,44 @@ try {
             $longitude = $sheet->getCell($longitudeColumnIndex . $row->getRowIndex())->getValue();
             $velocidade = $sheet->getCell($velocidadeColumnIndex . $row->getRowIndex())->getValue();
             $ignicao = $sheet->getCell($ignicaoColumnIndex . $row->getRowIndex())->getValue();
-            $dataHoraFloat = $sheet->getCell($dataHoraColumnIndex . $row->getRowIndex())->getValue();
+            $dataPosicaoFloat = $sheet->getCell($dataPosicaoColumnIndex . $row->getRowIndex())->getValue();
             
-            if ($latitude == "Latitude" || $dataHoraFloat == null) {
+            if ($latitude == "Latitude" || $dataPosicaoFloat == null) {
                 continue;
             }
+                     
+            $days = floor($dataPosicaoFloat);
+            $fraction = $dataPosicaoFloat - $days;
+            $seconds = floor(86400 * $fraction);
+            $date = date('Y-m-d H:i:s', strtotime("1899-12-30 + $days days + $seconds seconds"));
             
-            $dataHoraString = Date::excelToDateTimeObject($dataHoraFloat);
-            $dataHora = $dataHoraString->format('d/m/Y H:i:s');
+            // Separa a string em data e hora usando espaço como delimitador
+            $partes = explode(' ', $date);
+            
+            // $partes[0] conterá a data e $partes[1] conterá a hora
+            
+            $data = $partes[0];
+            $hora = $partes[1];
 
+            if ($ignicao === "OFF") {
+                $ignicao = 0;
+            } else {
+                $ignicao = 1;
+            }  
+            
             $latitude = str_replace(",", ".", $latitude);
             $longitude = str_replace(",", ".", $longitude);
             $velocidade = str_replace(",", ".", $velocidade);
-
-            if (!empty($latitude) && !empty($longitude) && !empty($ignicao) && !empty($dataHora)) {
+            
+            if (!empty($latitude) && !empty($longitude) && !empty($dataPosicaoFloat)){
                 // Insira os dados no banco de dados 
-                $stmt = $pdo->prepare("INSERT INTO coordenadas (latitude, longitude, velocidade, ignicao, data_hora, numero_linha) VALUES (:latitude, :longitude, :velocidade, :ignicao, :data_hora , :numero_linha)");
+                $stmt = $pdo->prepare("INSERT INTO coordenadas (latitude, longitude, velocidade, ignicao, data, hora, numero_linha) VALUES (:latitude, :longitude, :velocidade, :ignicao, :data, :hora, :numero_linha)");
                 $stmt->bindParam(':latitude', $latitude);
                 $stmt->bindParam(':longitude', $longitude);
                 $stmt->bindParam(':velocidade', $velocidade);
                 $stmt->bindParam(':ignicao', $ignicao);
-                $stmt->bindParam(':data_hora', $dataHora);
+                $stmt->bindParam(':data', $data);
+                $stmt->bindParam(':hora', $hora);
                 $stmt->bindParam(':numero_linha', $numeroLinha);
                 $stmt->execute();
             }

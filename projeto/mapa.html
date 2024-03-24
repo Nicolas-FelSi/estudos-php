@@ -13,6 +13,31 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+    <div>
+        <label for="inFiltros">Filtros: </label>
+        <select id="filtro">
+            <option value="padrao" selected>Padrão</option>
+            <option value="data_hora">Data/Hora</option>
+            <option value="tempoParada">Tempo de parada</option>
+            <option value="motorDesligado">Motor desligado</option>
+        </select>
+    </div>
+
+    <!-- Div para conter o segundo select -->
+    <div id="filtroData" style="display: none;">
+        <label for="filtroDataSelect">Data: </label>
+        <select id="filtroDataSelect">
+            
+        </select>
+    </div>
+
+    <div id="filtroHora" style="display: none;">
+        <label for="filtroHoraSelect">Hora: </label>
+        <select id="filtroHoraSelect">
+            
+        </select>
+    </div>
+
     <div id="map"></div>
     
     <!-- link jquery -->
