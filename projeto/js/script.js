@@ -100,18 +100,17 @@ $(document).ready(function () {
         let primeiraParada = null;
 
         dadosJson.forEach((dado) => {
+          const dataFormatada = moment(dado.data).format('DD-MM-YYYY');
           if (dado.ignicao === 0 && primeiraParada === null) {
             const dataHoraObjeto = new Date(dado.data + ' ' + dado.hora);
-
             primeiraParada = new Date(dataHoraObjeto); // Atualiza a última parada
           } else if (dado.ignicao === 1 && primeiraParada !== null) {
             const dataHoraObjeto = new Date(dado.data + ' ' + dado.hora);
-
             const dataInicioParada = primeiraParada;
             const dataFimParada = new Date(dataHoraObjeto);
-            const duracaoParada = dataFimParada - dataInicioParada // Converte de milissegundos para minutos
+            const duracaoParada = dataFimParada - dataInicioParada; // Converte de milissegundos para minutos
             const pontoIgnicaoOn = L.marker([dado.latitude, dado.longitude]).addTo(map);
-            const dataFormatada = moment(dado.data).format('DD-MM-YYYY');
+    
             pontoIgnicaoOn.bindPopup(`
             Dt: ${dataFormatada}<br>
             Hr: ${dado.hora}<br>
@@ -173,7 +172,8 @@ $(document).ready(function () {
           dadosCriarMapaPadrao();
           const filtro = document.getElementById("filtroDataSelect").value;
           dadosJson.forEach((dado) => {
-            if (filtro == dado.data) {
+            const dataFormatada = moment(dado.data).format('DD-MM-YYYY');
+            if (filtro == dataFormatada) {
               const pontoMapa = L.marker([dado.latitude, dado.longitude]).addTo(map);
               bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numero_linha)
             }
