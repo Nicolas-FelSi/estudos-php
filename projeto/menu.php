@@ -88,7 +88,7 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
           <div class="col-md-4 d-flex justify-content-start">
           </div>
           <div class="col-md-4 d-flex justify-content-center">
-            <form enctype="multipart/form-data" method="post" accept-charset="utf-8" id="importa" role="form" action="pegarDados.php">
+            <form enctype="multipart/form-data" method="post" accept-charset="utf-8" id="importa" role="form" action="salvarPlanilha.php">
               <div class="row">
                 <!-- <div class="col-md-12">
                   <label for="eletrodo_importa" class="form-label">Eletrodo</label>

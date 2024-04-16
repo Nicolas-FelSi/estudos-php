@@ -1,7 +1,7 @@
 <?php
     session_start();
     ob_start();
-    require_once "./conexao1.php";
+    require_once "./conexao.php";
 
     function loginInvalido(){
         echo "<div class='alert alert-danger text-center' role='alert'>";

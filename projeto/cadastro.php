@@ -1,5 +1,5 @@
 <?php
-require "./conexao1.php";
+require "./conexao.php";
 ?>
 
 <!doctype html>
