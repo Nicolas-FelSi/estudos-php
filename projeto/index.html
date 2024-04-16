@@ -1,25 +1,165 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <script defer src="./js/verificarArquivo.js"></script>
-    
+    <title>Sistema de Mecânica</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="css/sistema/landpage.css" rel="stylesheet">
 </head>
 
-<body> 
-    <h1>Importar arquivo .xls ou .xlsx</h1>
-    <form action="pegarDados.php" method="post" enctype="multipart/form-data">
-        <label for="idArquivo">Arquivo: </label>
-        <input type="file" name="arquivo" id="idArquivo">
-        <br>
-        <br>
-        <input type="submit" value="Enviar" id="btnSubmit">
-
-    </form>
+<body>
+    <header id="topo">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">solvEDM</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html"><i class="fa-solid fa-house"></i>&nbsp;Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.php"><i class="fa-solid fa-id-card"></i>&nbsp;Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <!-- Carrossel de itens -->
+        <div id="carrossel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carrossel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carrossel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carrossel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#777" />
+                    </svg>
+                    
+                    <div class="container">
+                        <div class="carousel-caption text-start">
+                            <h1>Análise gráfica</h1>
+                            <p>Compare rendimento técnológico do processo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#777" />
+                    </svg>
+                    
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>Predição de resultados</h1>
+                            <p>Ensaie resultados alterando as variáveis de entrada</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#777" />
+                    </svg>
+                    
+                    <div class="container">
+                        <div class="carousel-caption text-end">
+                            <h1>Panorama EDM</h1>
+                            <p>Conheça um pouco mais sobre o processo EDM e suas variáveis de entreda</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carrossel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carrossel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+        <!-- Fim carrossel de itens -->
+        <!-- ================================================== -->
+        <!-- Conteúdo da página -->
+        <div class="container marketing">
+            <!-- Três colunas complementares com os dados do carrossel -->
+            <div class="row">
+                <div class="col-lg-4">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Cadastro de Materiais</title>
+                        <rect width="100%" height="100%" fill="#ffa43a" />
+                    </svg>
+                    <h2>Cadastro de Materiais</h2>
+                    <p>Cadastre inúmeros MATERIAIS para usinagem</p>
+                </div>
+                <!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Eletrodos</title>
+                        <rect width="100%" height="100%" fill="#d6a735" />
+                    </svg>
+                    <h2>Eletrodos</h2>
+                    <p>Cadastre todos os materiais para ELETRODOS</p>
+                </div>
+                <!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Predição</title>
+                        <rect width="100%" height="100%" fill="#a7a7a7" />
+                    </svg>
+                    
+                    <h2>Predição</h2>
+                    <p>PREDIÇÃO em diferentes tecnologias de erosão</p>
+                </div>
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- Fim três colunas -->
+            
+            <hr class="featurette-divider">
+            
+            <!-- Restante conteúdo -->
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">
+                        Software de predição e simulação <span class="text-muted"> para processos de eletroerosão.</span>
+                    </h2>
+                    <p class="lead">Predição e simulação de forma efetiva!</p>
+                </div>
+                <div class="col-md-5">
+                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>solvEDM</title>
+                        <rect width="100%" height="100%" fill="#eee" />
+                        <text x="50%" y="50%" fill="#aaa" dy=".3em">solvEDM</text>
+                    </svg>
+                </div>
+            </div>
+            <!-- Fim restante conteúdo -->
+        </div>
+        <!-- Fim conteúdo da página -->
+    </main>
+    <footer class="container">
+        <hr class="featurette-divider">
+        <p class="float-end">
+            <a href="#topo">Voltar ao topo</a>
+        </p>
+        <p>
+            &copy; 2024–<script>
+                document.write(new Date().getFullYear())
+                </script>
+            | solvEDM - Registro de programa de computador no INPI - BR 51 2023 003995-0
+        </p>
+        <div class="text-center">
+            <p>
+                <img src="./imagens/cc-by-nc_icon_100.svg.png" title="Creative Commons" />
+            </p>
+        </div>
+    </footer>
+    
+    <script src="js/jquery/jquery-3.7.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/51b23194c0.js" crossorigin="anonymous"></script>
+    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
