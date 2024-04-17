@@ -2,14 +2,14 @@
 session_start();
 ob_start();
 
-function loginInvalido(){
+function loginNaoEncontrado(){
   echo "<div class='alert alert-danger text-center' role='alert'>";
-  echo "Email ou senha incorreta!";
+  echo "Faça login para entrar no sistema!";
   echo "</div>";
 }
 
 if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
-  $_SESSION['msg']  = loginInvalido();
+  $_SESSION['msg']  = loginNaoEncontrado();
   header("Location: login.php");
 }
 ?>

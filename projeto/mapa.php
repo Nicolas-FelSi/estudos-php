@@ -1,3 +1,19 @@
+<?php
+session_start();
+ob_start();
+
+function loginNaoEncontrado(){
+  echo "<div class='alert alert-danger text-center' role='alert'>";
+  echo "Faça login para entrar no sistema!";
+  echo "</div>";
+}
+
+if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
+  $_SESSION['msg']  = loginNaoEncontrado();
+  header("Location: login.php");
+}
+?>
+
 <!doctype html>
 <html lang="pt-BR">
 

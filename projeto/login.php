@@ -34,7 +34,7 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html"><i class="fa-solid fa-house"></i>&nbsp;Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.html"><i class="fas fa-id-card"></i>&nbsp;Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.php"><i class="fas fa-id-card"></i>&nbsp;Login</a></li>
                     </ul>
                 </div>
             </div>
