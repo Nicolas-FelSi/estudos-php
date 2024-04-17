@@ -31,50 +31,22 @@ require "./conexao.php";
                 echo "</div> ";
                 echo "<a class='btn btn-warning' href='menu.php'>Voltar</a>";
             } else {
-                // Mova o arquivo enviado para o local desejado
-                $sql = "SELECT * FROM planilha WHERE nomePlanilha = :nomePlanilha";
-                $resultado_sql = $pdo->prepare($sql);
-                $resultado_sql->bindParam(':nomePlanilha', $nomePlanilha);
-                $resultado_sql->execute();         
-                $resultado_sql->rowCount() > 0;
-                
-                function enviarPlanilha($destino, $nomePlanilha, $caminho_temporario) {
-                    $destino = 'uploads/' . $nomePlanilha; //Pasta onde o arquivo será armazenado
-                    if (move_uploaded_file($caminho_temporario, $destino)) {
-                        echo "<div class='alert alert-primary' role='alert'>";
-                        echo "O arquivo $nomePlanilha foi enviado com sucesso.";
-                        echo "</div> ";
-                        echo "<div class='d-flex justify-content-evenly'>";
-                        echo "<button class='btn btn-warning' onclick='voltarPagina()'>Voltar</button>";
-                        echo "<a class='btn btn-success' href='conexao.php'>Avançar</a>";
-                        echo "</div>";
-                    } else {
-                        echo "<div class='alert alert-danger' role='alert'>";
-                        echo "Erro ao enviar o arquivo.";
-                        echo "</div> ";
-                        echo "<button class='btn btn-warning' onclick='voltarPagina()'>Voltar</button>";
-                    }
-                }      
-
-                // if ($resultado_sql) {
-                //     echo "Já existe um arquivo com o nome $nomePlanilha. Deseja substituí-lo?<br>";
-                //     echo "<form method='POST' class='alert alert-warning' role='alert'>";
-                //     echo "<div class='d-flex justify-content-evenly'>";
-                //     echo "<input type='submit' name='cancelar' value='Não' class='btn btn-warning'>";
-                //     echo "<input type='submit' name='substituir' value='Sim' class='btn btn-success'>";
-                //     echo "</div>";                
-                //     echo "</form> ";
-
-                //     if (isset($_POST['cancelar'])) {
-                //         header("Location: menu.php");
-                //         exit();
-                //     } elseif(isset($_POST['substituir'])){
-                //         enviarPlanilha($destino, $nomePlanilha, $caminho_temporario);
-                //     }        
-                // } else {
-                //     enviarPlanilha($destino, $nomePlanilha, $caminho_temporario);
-                // }
-
+                // Mova o arquivo enviado para o local desejado               
+                $destino = 'uploads/' . $nomePlanilha; //Pasta onde o arquivo será armazenado
+                if (move_uploaded_file($caminho_temporario, $destino)) {
+                    echo "<div class='alert alert-success' role='alert'>";
+                    echo "O arquivo $nomePlanilha foi enviado com sucesso.";
+                    echo "</div> ";
+                    echo "<div class='d-flex justify-content-evenly'>";
+                    echo "<a href='menu.php' class='btn btn-warning'>Voltar</a>";
+                    echo "<a class='btn btn-success' href='processarPlanilha.php'>Avançar</a>";
+                    echo "</div>";
+                } else {
+                    echo "<div class='alert alert-danger' role='alert'>";
+                    echo "Erro ao enviar o arquivo.";
+                    echo "</div> ";
+                    echo "<a href='menu.php' class='btn btn-warning'>Voltar</a>";
+                }
             }
         } else {
             echo "<div class='alert alert-danger' role='alert'>";
@@ -88,7 +60,6 @@ require "./conexao.php";
     <script src="./js/jquery/jquery-3.7.1.min.js"></script>
     <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/51b23194c0.js" crossorigin="anonymous"></script>
-    <script src="./js/sistema/login.js"></script>
 </body>
 
 </html>

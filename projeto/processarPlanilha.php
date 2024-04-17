@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-require "./conexao1.php";
+require "./conexao.php";
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -108,21 +108,17 @@ try {
         echo "<div class='alert alert-danger' role='alert'>";
         echo "Colunas não encontradas no arquivo Excel.\n";
         echo "</div> ";
-        echo "<button class='btn btn-warning' onclick='voltarPagina()'>Voltar</button>";
+        echo "<a class='btn btn-warning' href='menu.php'>Voltar</a>";
     }
 } catch (Exception $e) {
     echo "<div class='alert alert-danger' role='alert'>";
     echo "Erro ao processar o arquivo Excel: " . $e->getMessage() . "\n";
     echo "</div> ";
-    echo "<button class='btn btn-warning' onclick='voltarPagina()'>Voltar</button>";
+    echo "<a class='btn btn-warning' href='menu.php'>Voltar</a>";
 }
 
 // Feche a conexão com o banco de dados
 $pdo = null;
 
-echo "<div class='d-flex justify-content-evenly'>";
-echo "<button class='btn btn-warning' onclick='voltarPagina()'>Voltar</button>";
-echo "<a class='btn btn-success' href='conexao.php'>Avançar</a>";
-echo "</div>";
-header("Location: ponto_index.php");
+header("Location: mapa.php");
 exit();

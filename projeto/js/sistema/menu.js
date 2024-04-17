@@ -6,7 +6,7 @@ $(document).ready(function () {
     });
 
     $("#ponto_link").click(function (e) {
-        $("#conteudo").load("ponto_index.php");
+        $("#conteudo").load("mapa.php");
     });
 
     $("#usuario_link").click(function (e) {
@@ -14,7 +14,7 @@ $(document).ready(function () {
     });
 
     $("#importa_link").click(function () {
-        $("#conteudo").load("importa_index.php");
+        $("#conteudo").load("menu.php");
     });
 
     $("#logout_modal_sim").click(function (e) {

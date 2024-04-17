@@ -36,12 +36,12 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
   <div class="l-navbar" id="nav-bar">
     <nav class="navmenu">
       <div>
-        <a class="nav_logo" title="Importação de Dados" id="importa_link">
+        <a href="menu.php" class="nav_logo" title="Importação de Dados" id="importa_link">
           <i class="fas fa-upload nav_icon"></i>
           <span class="nav_logo-name">solvEDM</span>
         </a>
         <div class="nav_list">
-          <a href="#" class="nav_link" title="Ponto" id="ponto_link">
+          <a href="mapa.php" class="nav_link" title="Ponto" id="ponto_link">
             <i class="fas fa-map-marker-alt nav_icon"></i>
             <span class="nav_name">Ponto</span>
           </a>
@@ -63,9 +63,6 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
   <!--div main-->
   <div class="container">
     <div class="row">
-      <div id="carregando_importa" class="d-none text-center">
-        <img src="./imagens/carregando.gif" />
-      </div>
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-4 d-flex justify-content-start">

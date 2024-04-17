@@ -62,8 +62,8 @@ $(document).ready(function () {
           coordenadasArray.push([latitude, longitude]);
         });
 
-        const primeiraLinha = coordenadas[0].numero_linha;
-        const ultimaLinha = coordenadas[coordenadas.length - 1].numero_linha;
+        const primeiraLinha = coordenadas[0].numeroLinha;
+        const ultimaLinha = coordenadas[coordenadas.length - 1].numeroLinha;
 
         const primeiraData = coordenadas[0].data;
         const ultimaData = coordenadas[coordenadas.length - 1].data;
@@ -87,7 +87,7 @@ $(document).ready(function () {
         dadosJson.forEach((dado) => {
           if (dado.ignicao === 0) {
             const pontoIgnicaoOff = L.marker([dado.latitude, dado.longitude]).addTo(map);
-            bindPopupGenerico(pontoIgnicaoOff, dado.data, dado.hora, dado.numero_linha);
+            bindPopupGenerico(pontoIgnicaoOff, dado.data, dado.hora, dado.numeroLinha);
           }
         })
       }
@@ -114,7 +114,7 @@ $(document).ready(function () {
             pontoIgnicaoOn.bindPopup(`
             Dt: ${dataFormatada}<br>
             Hr: ${dado.hora}<br>
-            N° linha: ${dado.numero_linha}<br>
+            N° linha: ${dado.numeroLinha}<br>
             Tempo Parada: ${exibirTempoDeParada(duracaoParada)}
             `).openPopup();
             primeiraParada = null; // Reseta a última parada
@@ -175,7 +175,7 @@ $(document).ready(function () {
             const dataFormatada = moment(dado.data).format('DD-MM-YYYY');
             if (filtro == dataFormatada) {
               const pontoMapa = L.marker([dado.latitude, dado.longitude]).addTo(map);
-              bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numero_linha)
+              bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numeroLinha)
             }
           })
         }
@@ -186,7 +186,7 @@ $(document).ready(function () {
           dadosJson.forEach((dado) => {
             if (filtro == dado.hora) {
               const pontoMapa = L.marker([dado.latitude, dado.longitude]).addTo(map);
-              bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numero_linha)
+              bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numeroLinha)
             }
           })
         }
