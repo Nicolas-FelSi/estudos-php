@@ -110,7 +110,7 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Confirma importação de dados?
+                    Confirmar importação de dados?
                     <input type="hidden" id="id_importa_eletrodo_modal" value="" />
                     <input type="hidden" id="id_importa_polaridade_modal" value="" />
                 </div>

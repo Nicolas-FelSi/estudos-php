@@ -43,7 +43,7 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
         <div class="nav_list">
           <a href="mapa.php" class="nav_link" title="Ponto" id="ponto_link">
             <i class="fas fa-map-marker-alt nav_icon"></i>
-            <span class="nav_name">Ponto</span>
+            <span class="nav_name">Pontos</span>
           </a>
           <a href="#" class="nav_link" title="Usuário" id="usuario_link">
             <i class="fas fa-user-cog nav_icon"></i>
@@ -73,9 +73,9 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
           <div class="col-md-4 d-flex justify-content-end">
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
+                <li class="breadcrumb-item"><a href="index.html" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
                     <span>Home</span></a></li>
-                <li class="breadcrumb-item active" aria-current="page">Importa</li>
+                <li class="breadcrumb-item active" aria-current="page">Importação</li>
               </ol>
             </nav>
           </div>
@@ -129,7 +129,7 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
     </div>
   </div>
 
-  <!--modal de importação-->
+  <!--modal de importação
   <div class="modal fade" id="modal_importa" tabindex="-1" aria-labelledby="logoutlabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -149,8 +149,8 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
       </div>
     </div>
   </div>
-  <!--fim div main-->
-  <!--modal de sobre-->
+  <!--fim div main -->
+  <!--modal de sobre -->
   <div class="modal fade" id="sobre_modal" tabindex="-1" aria-labelledby="logoutlabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -159,7 +159,6 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>solvEDM - Simulador de resultados para eletroerosão</p>
           <p>Desenvolvido no IFSC - Desde 2024–
             <script>
               document.write(new Date().getFullYear())

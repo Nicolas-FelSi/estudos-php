@@ -11,7 +11,7 @@ require "./conexao.php";
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="css/sistema/landpage.css" rel="stylesheet">
+    <!-- <link href="css/sistema/landpage.css" rel="stylesheet"> -->
     <link href="css/sistema/cadastro.css" rel="stylesheet">
 </head>
 
@@ -19,13 +19,12 @@ require "./conexao.php";
     <header id="topo">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">Mecânica</a>
+                <a class="navbar-brand" href="index.html">Nome</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html"><i class="fas fa-home"></i>&nbsp;Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="login.php"><i class="fas fa-id-card"></i>&nbsp;Login</a></li>
                     </ul>
                 </div>
@@ -38,7 +37,17 @@ require "./conexao.php";
                 $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
                 $nome = $dados['nome'];
                 $email = $dados['email'];
-                $senha = $dados['senha'];
+                $senha = password_hash($dados['senha'], PASSWORD_DEFAULT); // Aqui é onde a senha é criptografada
+
+                $sql = "SELECT * FROM usuario WHERE email = :email";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
+
+                if ($stmt->rowCount() > 0) {
+                    $mensagem = "Este e-mail já está em uso!";
+                    echo "<script type='text/javascript'>alert('$mensagem');</script>";
+                }else {
             
                 $sql = "INSERT INTO usuario (nome, email, senha) VALUES (:nome, :email, :senha)";
                 $resultado_sql = $pdo->prepare($sql);
@@ -51,6 +60,7 @@ require "./conexao.php";
                 echo "Cadastro realizado com sucesso";
                 echo "</div>";
                 header("Location: login.php");
+                }
             }
         ?>
         <h4>Cadastro inicial do usuário</h4>
@@ -93,6 +103,5 @@ require "./conexao.php";
     <script src="https://kit.fontawesome.com/51b23194c0.js" crossorigin="anonymous"></script>
     <script src="js/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="js/sistema/cadastro.js"></script>
-</body>
-
+</body
 </html>

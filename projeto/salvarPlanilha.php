@@ -10,7 +10,7 @@ require "./conexao.php";
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="css/sistema/landpage.css" rel="stylesheet">
+   <!-- <link href="css/sistema/landpage.css" rel="stylesheet"> -->
     <link href="css/sistema/login.css" rel="stylesheet">
 </head>
 

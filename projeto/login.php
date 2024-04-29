@@ -14,12 +14,12 @@
 <html lang="pt-BR">
 
 <head>
-    <title>Login</title>
+    <title>Monitoramento de Rotas</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="css/sistema/landpage.css" rel="stylesheet">
+    <!-- <link href="css/sistema/landpage.css" rel="stylesheet"> -->
     <link href="css/sistema/login.css" rel="stylesheet">
 </head>
 
@@ -55,7 +55,7 @@
             if (($resultado_sql) && ($resultado_sql->rowCount() != 0)) {
                 $linha_usuario = $resultado_sql->fetch(PDO::FETCH_ASSOC);
 
-                if ($senha === $linha_usuario['senha']) {
+                if (password_verify($senha, $linha_usuario['senha'])) { // Verifica se a senha corresponde ao hash
                     $_SESSION['idUsuario'] = $linha_usuario['idUsuario'];
                     $_SESSION['nome'] = $linha_usuario['nome']; 
                     header("Location: menu.php");
@@ -75,7 +75,7 @@
     ?>
     <main class="form-signin">
         <form id="formlogin" action="" method="POST">
-            <h1 class="h3 mb-3 fw-normal">Favor logar-se</h1>
+            <h1 class="h3 mb-3 fw-normal" style="text-align: center;">Realize seu login</h1>
             <div class="form-floating">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email" required="required"> <label for="email">Email
                 </label>
@@ -85,17 +85,9 @@
             </div>
             <input class="w-100 btn btn-lg btn-primary" type="submit" name="logar" value="Logar">
         </form>
+        <br>
         <p class="text-center"><a href="cadastro.php">Cadastrar-se!</a></p>
     </main>
-    <footer class="container">
-        <hr class="featurette-divider">
-        <p>
-            &copy; 2024–<script>
-                document.write(new Date().getFullYear())
-            </script>
-            | solvEDM - Predição e simulação de forma eficiente.
-        </p>
-    </footer>
 
     <script src="./js/jquery/jquery-3.7.1.min.js"></script>
     <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
