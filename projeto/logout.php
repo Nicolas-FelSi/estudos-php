@@ -1,12 +1,8 @@
 <?php
-function deslogado() {
-    echo "<div class='alert alert-success text-center' role='alert'>";
-    echo "Deslogado com sucesso!";
-    echo "</div>";
-}
 
 session_start();
 ob_start();
-unset($_SESSION['idUsuario'], $_SESSION['nome']);
-$_SESSION['msg'] = deslogado();
-header("Location: login.php");
+unset($_SESSION['id_usuario'], $_SESSION['nome'], $_SESSION['id_planilha']);
+$_SESSION['mapa_importado'] = false;
+header("Location: index.html");
+exit();

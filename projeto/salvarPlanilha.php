@@ -1,5 +1,12 @@
 <?php
 require "./conexao.php";
+session_start();
+ob_start();
+
+if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
+  header("Location: login.php");
+  exit();
+}
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -19,11 +26,10 @@ require "./conexao.php";
     <?php
         // Verifica se o arquivo foi enviado sem erros
         if (isset($_FILES['arquivo']) && $_FILES['arquivo']['error'] === UPLOAD_ERR_OK) {
-            // Informações sobre o arquivo enviado
-            $nomePlanilha = $_FILES['arquivo']['name'];
-            
+            // Informações sobre o arquivo enviado            
+            $nomePlanilha = $_FILES['arquivo']['name'];    
+            $file_tmp = $_FILES['arquivo']['tmp_name']; 
             $extensao = pathinfo($nomePlanilha, PATHINFO_EXTENSION);
-            $caminho_temporario = $_FILES['arquivo']['tmp_name'];
 
             if ($extensao !== 'xls' && $extensao !== 'xlsx') {
                 echo "<div class='alert alert-primary' role='alert'>";
@@ -31,22 +37,33 @@ require "./conexao.php";
                 echo "</div> ";
                 echo "<a class='btn btn-warning' href='menu.php'>Voltar</a>";
             } else {
-                // Mova o arquivo enviado para o local desejado               
-                $destino = 'uploads/' . $nomePlanilha; //Pasta onde o arquivo será armazenado
-                if (move_uploaded_file($caminho_temporario, $destino)) {
-                    echo "<div class='alert alert-success' role='alert'>";
-                    echo "O arquivo $nomePlanilha foi enviado com sucesso.";
-                    echo "</div> ";
-                    echo "<div class='d-flex justify-content-evenly'>";
-                    echo "<a href='menu.php' class='btn btn-warning'>Voltar</a>";
-                    echo "<a class='btn btn-success' href='processarPlanilha.php'>Avançar</a>";
-                    echo "</div>";
-                } else {
-                    echo "<div class='alert alert-danger' role='alert'>";
-                    echo "Erro ao enviar o arquivo.";
-                    echo "</div> ";
-                    echo "<a href='menu.php' class='btn btn-warning'>Voltar</a>";
-                }
+                // Arquivo não existe, fazer o upload
+                move_uploaded_file($file_tmp, "uploads/" . $nomePlanilha);
+
+                $idUsuario = $_SESSION['id_usuario'];                     
+                
+                // Insere o nome do arquivo no banco de dados
+                $sql = $pdo->prepare("INSERT INTO planilha (nome_planilha, fk_id_usuario) VALUES (:nome_planilha, :fk_id_usuario)");
+                $sql->bindParam(':nome_planilha', $nomePlanilha);
+                $sql->bindParam(':fk_id_usuario', $idUsuario);
+                $sql->execute();          
+                
+                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE fk_id_usuario = :fk_id_usuario");
+                $sql->bindParam(':fk_id_usuario', $idUsuario);
+                $sql->execute();  
+                
+                $resultado = $sql->fetch(PDO::FETCH_ASSOC);
+                $_SESSION['id_planilha'] = $resultado['id_planilha'];
+
+                // echo "<div class='alert alert-success' role='alert'>";
+                // echo "O arquivo $nomePlanilha foi enviado com sucesso.";
+                // echo "</div> ";
+                // echo "<div class='d-flex justify-content-evenly'>";
+                // echo "<a href='menu.php' class='btn btn-warning'>Voltar</a>";
+                // echo "<a class='btn btn-success' href='processarPlanilha.php'>Avançar</a>";
+                // echo "</div>";
+                header("Location: processarPlanilha.php");
+                
             }
         } else {
             echo "<div class='alert alert-danger' role='alert'>";

@@ -1,13 +1,21 @@
 <?php
 // Conexão com o banco de dados MySQL usando PDO
 require "./conexao.php";
+session_start();
+ob_start();
+
+$_SESSION['mapa_importado'] = true;
+
+// $idPlanilha = $_SESSION['id_planilha'];
+$idPlanilhaGet = $_GET['id_planilha'];
 
 // Consulta SQL para selecionar latitude e longitude
-$sql = "SELECT latitude, longitude, ignicao, data, hora, numeroLinha FROM coordenada";
+$sql = "SELECT latitude, longitude, ignicao, data, hora, numero_linha FROM coordenada WHERE fk_id_planilha = :id_planilha";
 
 try {
     // Preparar e executar a consulta
     $resultado_sql = $pdo->prepare($sql);
+    $resultado_sql->bindParam(':id_planilha', $idPlanilhaGet);
     $resultado_sql->execute();
     
     // Obter os resultados como uma matriz associativa

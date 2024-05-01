@@ -1,6 +1,8 @@
 <?php
 require 'vendor/autoload.php';
-require "./conexao.php";
+require './conexao.php';
+session_start();
+ob_start();
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -8,14 +10,15 @@ $arquivos = scandir('uploads/');
 
 foreach ($arquivos as $arquivo) {
     if (is_file('uploads/' . $arquivo)) {
-        $excelFile = 'uploads/' . $arquivo;
+        $arquivoExcel = 'uploads/' . $arquivo;
+        $nomePlanilha = $arquivo;
         break; // Para ao encontrar o primeiro arquivo válido
     }
 }
 
 try {
     // Carrega o arquivo Excel
-    $spreadsheet = IOFactory::load($excelFile);
+    $spreadsheet = IOFactory::load($arquivoExcel);
     $sheet = $spreadsheet->getActiveSheet();
 
     $latitudeColumnIndex = -1;
@@ -34,30 +37,33 @@ try {
             $cellValue = strtolower($cell->getValue());
 
             if (strpos($cellValue, 'latitude') !== false && $latitudeColumnIndex == -1) {
-                $latitudeColumnIndex = $cell->getColumn();    
+                $latitudeColumnIndex = $cell->getColumn();   
             } elseif (strpos($cellValue, 'longitude') !== false && $longitudeColumnIndex == -1) {
-                $longitudeColumnIndex = $cell->getColumn();       
+                $longitudeColumnIndex = $cell->getColumn();   
             } elseif (strpos($cellValue, 'velocidade (km/h)') !== false && $velocidadeColumnIndex == -1) {
-                $velocidadeColumnIndex = $cell->getColumn();            
+                $velocidadeColumnIndex = $cell->getColumn();      
             } elseif (strpos($cellValue, 'ignição') !== false && $ignicaoColumnIndex == -1) {
                 $ignicaoColumnIndex = $cell->getColumn();
             } elseif (strpos($cellValue, 'data da posição') !== false && $dataPosicaoColumnIndex == -1) {
-                $dataPosicaoColumnIndex = $cell->getColumn();  
+                $dataPosicaoColumnIndex = $cell->getColumn();
             }
         }
 
         // Se as colunas forem encontradas, pare de procurar
-        if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
+        if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && 
+        $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
             break;
         }
     }
 
     // Verifica se as colunas foram encontradas
-    if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
+    if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && 
+    $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
+        
         // Itera pelas linhas para obter os dados e inseri-los no banco de dados
         foreach ($sheet->getRowIterator() as $row) {
             $numeroLinha = $row->getRowIndex();
-            
+   
             $latitude = $sheet->getCell($latitudeColumnIndex . $row->getRowIndex())->getValue();
             $longitude = $sheet->getCell($longitudeColumnIndex . $row->getRowIndex())->getValue();
             $velocidade = $sheet->getCell($velocidadeColumnIndex . $row->getRowIndex())->getValue();
@@ -92,15 +98,23 @@ try {
             $velocidade = str_replace(",", ".", $velocidade);
             
             if (!empty($latitude) && !empty($longitude) && !empty($dataPosicaoFloat)){
+                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE nome_planilha = :nome_planilha");
+                $sql->bindParam(':nome_planilha', $nomePlanilha);
+                $sql->execute();
+
+                $resultado = $sql->fetch(PDO::FETCH_ASSOC); 
+
                 // Insira os dados no banco de dados 
-                $sql = $pdo->prepare("INSERT INTO coordenada (latitude, longitude, velocidade, ignicao, data, hora, numeroLinha) VALUES (:latitude, :longitude, :velocidade, :ignicao, :data, :hora, :numeroLinha)");
+                $sql = $pdo->prepare("INSERT INTO coordenada (fk_id_planilha, latitude, longitude, velocidade, ignicao, data, hora, numero_linha) 
+                VALUES (:fk_id_planilha, :latitude, :longitude, :velocidade, :ignicao, :data, :hora, :numero_linha)");
+                $sql->bindParam(':fk_id_planilha', $resultado['id_planilha']);
                 $sql->bindParam(':latitude', $latitude);
                 $sql->bindParam(':longitude', $longitude);
                 $sql->bindParam(':velocidade', $velocidade);
                 $sql->bindParam(':ignicao', $ignicao);
                 $sql->bindParam(':data', $data);
                 $sql->bindParam(':hora', $hora);
-                $sql->bindParam(':numeroLinha', $numeroLinha);
+                $sql->bindParam(':numero_linha', $numeroLinha);
                 $sql->execute();
             }
         }
@@ -119,6 +133,8 @@ try {
 
 // Feche a conexão com o banco de dados
 $pdo = null;
+
+$_SESSION['mapa_importado'] = true;
 
 header("Location: mapa.php");
 exit();

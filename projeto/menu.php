@@ -2,15 +2,9 @@
 session_start();
 ob_start();
 
-function loginNaoEncontrado(){
-  echo "<div class='alert alert-danger text-center' role='alert'>";
-  echo "Faça login para entrar no sistema!";
-  echo "</div>";
-}
-
-if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
-  $_SESSION['msg']  = loginNaoEncontrado();
+if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   header("Location: login.php");
+  exit();
 }
 ?>
 
@@ -45,7 +39,7 @@ if (!(isset($_SESSION['idUsuario']) && isset($_SESSION['nome']))) {
             <i class="fas fa-map-marker-alt nav_icon"></i>
             <span class="nav_name">Pontos</span>
           </a>
-          <a href="#" class="nav_link" title="Usuário" id="usuario_link">
+          <a href="usuario.php" class="nav_link" title="Usuário" id="usuario_link">
             <i class="fas fa-user-cog nav_icon"></i>
             <span class="nav_name">Usuário</span>
           </a>

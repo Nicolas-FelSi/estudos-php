@@ -47,7 +47,7 @@
             $email = $dados['email'];    
             $senha = $dados['senha'];  
 
-            $sql = "SELECT idUsuario, nome, email, senha FROM usuario WHERE email=:email LIMIT 1";
+            $sql = "SELECT id_usuario, nome, email, senha FROM usuario WHERE email=:email LIMIT 1";
             $resultado_sql = $pdo->prepare($sql);
             $resultado_sql->bindParam(':email', $email, PDO::PARAM_STR);
             $resultado_sql->execute();
@@ -56,7 +56,7 @@
                 $linha_usuario = $resultado_sql->fetch(PDO::FETCH_ASSOC);
 
                 if (password_verify($senha, $linha_usuario['senha'])) { // Verifica se a senha corresponde ao hash
-                    $_SESSION['idUsuario'] = $linha_usuario['idUsuario'];
+                    $_SESSION['id_usuario'] = $linha_usuario['id_usuario'];
                     $_SESSION['nome'] = $linha_usuario['nome']; 
                     header("Location: menu.php");
                 } else {
@@ -92,7 +92,6 @@
     <script src="./js/jquery/jquery-3.7.1.min.js"></script>
     <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/51b23194c0.js" crossorigin="anonymous"></script>
-    <script src="./js/sistema/login.js"></script>
 </body>
 
 </html>

@@ -1,8 +1,18 @@
 $(document).ready(function () {
+  // Função para obter parâmetros da URL
+  function obterParametroDaURL(nome) {
+    const parametros = new URLSearchParams(window.location.search);
+    return parametros.get(nome);
+  }
+
+  // Obtém o ID da planilha da URL
+  const idPlanilha = obterParametroDaURL('id_planilha');
+
   // Faz a requisição AJAX ao arquivo PHP
   $.ajax({
     url: "./mandarDados.php",
-    type: "POST", // Pode ser GET ou POST dependendo da sua implementação
+    type: "GET", // Pode ser GET ou POST dependendo da sua implementação
+    data: { id_planilha: idPlanilha },
     dataType: "json", // Espera-se receber um JSON como resposta
     success: function (dados) {
       let map;
@@ -62,8 +72,8 @@ $(document).ready(function () {
           coordenadasArray.push([latitude, longitude]);
         });
 
-        const primeiraLinha = coordenadas[0].numeroLinha;
-        const ultimaLinha = coordenadas[coordenadas.length - 1].numeroLinha;
+        const primeiraLinha = coordenadas[0].numero_linha;
+        const ultimaLinha = coordenadas[coordenadas.length - 1].numero_linha;
 
         const primeiraData = coordenadas[0].data;
         const ultimaData = coordenadas[coordenadas.length - 1].data;
@@ -87,7 +97,7 @@ $(document).ready(function () {
         dadosJson.forEach((dado) => {
           if (dado.ignicao === 0) {
             const pontoIgnicaoOff = L.marker([dado.latitude, dado.longitude]).addTo(map);
-            bindPopupGenerico(pontoIgnicaoOff, dado.data, dado.hora, dado.numeroLinha);
+            bindPopupGenerico(pontoIgnicaoOff, dado.data, dado.hora, dado.numero_linha);
           }
         })
       }
@@ -110,11 +120,11 @@ $(document).ready(function () {
             const dataFimParada = new Date(dataHoraObjeto);
             const duracaoParada = dataFimParada - dataInicioParada; // Converte de milissegundos para minutos
             const pontoIgnicaoOn = L.marker([dado.latitude, dado.longitude]).addTo(map);
-    
+
             pontoIgnicaoOn.bindPopup(`
             Dt: ${dataFormatada}<br>
             Hr: ${dado.hora}<br>
-            N° linha: ${dado.numeroLinha}<br>
+            N° linha: ${dado.numero_linha}<br>
             Tempo Parada: ${exibirTempoDeParada(duracaoParada)}
             `).openPopup();
             primeiraParada = null; // Reseta a última parada
@@ -175,7 +185,7 @@ $(document).ready(function () {
             const dataFormatada = moment(dado.data).format('DD-MM-YYYY');
             if (filtro == dataFormatada) {
               const pontoMapa = L.marker([dado.latitude, dado.longitude]).addTo(map);
-              bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numeroLinha)
+              bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numero_linha)
             }
           })
         }
@@ -186,7 +196,7 @@ $(document).ready(function () {
           dadosJson.forEach((dado) => {
             if (filtro == dado.hora) {
               const pontoMapa = L.marker([dado.latitude, dado.longitude]).addTo(map);
-              bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numeroLinha)
+              bindPopupGenerico(pontoMapa, dado.data, dado.hora, dado.numero_linha)
             }
           })
         }
