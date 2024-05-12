@@ -10,7 +10,7 @@ $_SESSION['mapa_importado'] = true;
 $idPlanilhaGet = $_GET['id_planilha'];
 
 // Consulta SQL para selecionar latitude e longitude
-$sql = "SELECT latitude, longitude, ignicao, data, hora, numero_linha FROM coordenada WHERE fk_id_planilha = :id_planilha";
+$sql = "SELECT latitude, longitude, velocidade, ignicao, data, hora, numero_linha FROM coordenada WHERE fk_id_planilha = :id_planilha";
 
 try {
     // Preparar e executar a consulta
