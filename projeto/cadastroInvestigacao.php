@@ -1,5 +1,4 @@
 <?php
-require "./conexao.php";
 session_start();
 ob_start();
 
@@ -18,7 +17,6 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="./css/bootstrap/bootstrap.min.css" rel="stylesheet">
   <link href="./css/sistema/menu.css" rel="stylesheet">
-  <link rel="stylesheet" href="./css/sistema/usuario.css">
 </head>
 
 <body id="body">
@@ -62,18 +60,92 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   </div>
   <!--div main-->
   <div class="container">
-      <h2>Configurações do Usuário</h2>
-      <form action="atualizar_usuario.php" method="POST">
-        <div class="form-group">
-          <label for="nome">Alterar nome:</label>
-          <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu Nome">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mt-4 row">
+          <div class="col-md-4 d-flex justify-content-start">
+            <h4>Importação de Dados</h4>
+          </div>
+          <div class="col-md-4 d-flex justify-content-center">
+          </div>
+          <div class="col-md-4 d-flex justify-content-end">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
+                    <span>Home</span></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Importação</li>
+              </ol>
+            </nav>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="senha">Alterar senha:</label>
-          <input type="password" class="form-control" id="senha" name="senha" placeholder="Sua Senha">
+        <hr>
+        <div class="row">
+          <div class="col-md-4 d-flex justify-content-start">
+          </div>
+          <div class="col-md-4 d-flex justify-content-center">
+            <form enctype="multipart/form-data" method="post" accept-charset="utf-8" id="importa" role="form" action="salvarPlanilha.php">
+              <div class="row">
+                <!-- <div class="col-md-12">
+                  <label for="eletrodo_importa" class="form-label">Eletrodo</label>
+                  <select name="eletrodo_importa" id="eletrodo_importa" class="form-select">
+
+                  </select>
+                </div>
+                <div class="col-md-12">
+                  <label for="polaridade_importa" class="form-label">Polaridade</label>
+                  <select name="polaridade_importa" id="polaridade_importa" class="form-select">
+                    <option value="1">Positiva</option>
+                    <option value="0">Negativa</option>
+                  </select>
+                </div>
+                <div class="col-md-12">
+                  <label for="operacao_importa" class="form-label">Operação</label>
+                  <select name="operacao_importa" id="operacao_importa" class="form-select">
+
+                  </select>
+                </div> -->
+                <div class="col-md-12">
+                  <label for="idArquivo" class="form-label">Arquivo</label>
+                  <input type="file" name="arquivo" id="idArquivo" class="form-control">
+                </div>
+              </div>
+              <br>
+              <input type="submit" id="botao_importa" class="btn btn-primary btn-sm" value="Importar">
+            </form>
+          </div>
+          <div class="col-md-4 d-flex justify-content-end">
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Salvar</button>
-      </form>
+        <hr>
+      </div>
+      <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade show" style="display: none;" id="div_mensagem_importa">
+          <button type="button" class="btn-close btn-sm" aria-label="Close" id="div_mensagem_botao_importa"></button>
+          <p id="div_mensagem_texto_importa"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--modal de importação
+  <div class="modal fade" id="modal_importa" tabindex="-1" aria-labelledby="logoutlabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutlabel_eletrodo">Pergunta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Confirma importação de dados?
+          <input type="hidden" id="id_importa_eletrodo_modal" value="" />
+          <input type="hidden" id="id_importa_polaridade_modal" value="" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="modal_importa_sim">Sim</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+        </div>
+      </div>
+    </div>
   </div>
   <!--fim div main -->
   <!--modal de sobre -->
@@ -119,6 +191,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   <script src="./js/jquery/jquery-3.7.1.min.js"></script>
   <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://kit.fontawesome.com/51b23194c0.js" crossorigin="anonymous"></script>
+  <script src="js/sistema/verificarArquivo.js"></script>
   <script src="./js/sistema/menu.js"></script>
 </body>
 

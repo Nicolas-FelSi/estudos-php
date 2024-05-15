@@ -1,4 +1,5 @@
 <?php
+require "./conexao.php";
 session_start();
 ob_start();
 
@@ -30,11 +31,15 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   <div class="l-navbar" id="nav-bar">
     <nav class="navmenu">
       <div>
-        <a href="menu.php" class="nav_logo" title="Importação de Dados" id="importa_link">
-          <i class="fas fa-upload nav_icon"></i>
-          <span class="nav_logo-name">solvEDM</span>
+        <a href="menu.php" class="nav_logo" title="Planilhas" id="planilhas_link">
+          <i class="fa-solid fa-globe nav_icon"></i>
+          <span class="nav_logo-name">Planilhas</span>
         </a>
         <div class="nav_list">
+          <a href="cadastroInvestigacao.php" class="nav_link" title="Importação de Dados" id="importa_link">
+            <i class="fas fa-upload nav_icon"></i>
+            <span class="nav_name">Importação</span>
+          </a>
           <a href="mapa.php" class="nav_link" title="Ponto" id="ponto_link">
             <i class="fas fa-map-marker-alt nav_icon"></i>
             <span class="nav_name">Pontos</span>
@@ -58,9 +63,9 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="row">
+        <div class="mt-4 row">
           <div class="col-md-4 d-flex justify-content-start">
-            <h4>Importação de Dados</h4>
+            <h4>Suas importações</h4>
           </div>
           <div class="col-md-4 d-flex justify-content-center">
           </div>
@@ -69,48 +74,27 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
                     <span>Home</span></a></li>
-                <li class="breadcrumb-item active" aria-current="page">Importação</li>
+                <li class="breadcrumb-item active" aria-current="page">Planilhas</li>
               </ol>
             </nav>
           </div>
         </div>
         <hr>
-        <div class="row">
-          <div class="col-md-4 d-flex justify-content-start">
-          </div>
-          <div class="col-md-4 d-flex justify-content-center">
-            <form enctype="multipart/form-data" method="post" accept-charset="utf-8" id="importa" role="form" action="salvarPlanilha.php">
-              <div class="row">
-                <!-- <div class="col-md-12">
-                  <label for="eletrodo_importa" class="form-label">Eletrodo</label>
-                  <select name="eletrodo_importa" id="eletrodo_importa" class="form-select">
+        <div class="container mt-5">
+          <ul class="list-group">
+            <?php
+            // Recupera as importações do usuário atual
+            $idUsuario = $_SESSION['id_usuario'];
+            $sql = $pdo->prepare("SELECT nome_planilha, id_planilha FROM planilha WHERE fk_id_usuario = ?");
+            $sql->execute([$idUsuario]);
+            $importacoes = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-                  </select>
-                </div>
-                <div class="col-md-12">
-                  <label for="polaridade_importa" class="form-label">Polaridade</label>
-                  <select name="polaridade_importa" id="polaridade_importa" class="form-select">
-                    <option value="1">Positiva</option>
-                    <option value="0">Negativa</option>
-                  </select>
-                </div>
-                <div class="col-md-12">
-                  <label for="operacao_importa" class="form-label">Operação</label>
-                  <select name="operacao_importa" id="operacao_importa" class="form-select">
-
-                  </select>
-                </div> -->
-                <div class="col-md-12">
-                  <label for="idArquivo" class="form-label">Arquivo</label>
-                  <input type="file" name="arquivo" id="idArquivo" class="form-control">
-                </div>
-              </div>
-              <br>
-              <input type="submit" id="botao_importa" class="btn btn-primary btn-sm" value="Importar">
-            </form>
-          </div>
-          <div class="col-md-4 d-flex justify-content-end">
-          </div>
+            // Exibe as importações
+            foreach ($importacoes as $importacao) {
+              echo '<li class="list-group-item">' . htmlspecialchars($importacao['nome_planilha']) . ' <a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a></li>';
+            }
+            ?>
+          </ul>
         </div>
         <hr>
       </div>
@@ -118,27 +102,6 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         <div class="alert alert-info alert-dismissible fade show" style="display: none;" id="div_mensagem_importa">
           <button type="button" class="btn-close btn-sm" aria-label="Close" id="div_mensagem_botao_importa"></button>
           <p id="div_mensagem_texto_importa"></p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!--modal de importação
-  <div class="modal fade" id="modal_importa" tabindex="-1" aria-labelledby="logoutlabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="logoutlabel_eletrodo">Pergunta</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Confirma importação de dados?
-          <input type="hidden" id="id_importa_eletrodo_modal" value="" />
-          <input type="hidden" id="id_importa_polaridade_modal" value="" />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="modal_importa_sim">Sim</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
         </div>
       </div>
     </div>
@@ -187,7 +150,6 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   <script src="./js/jquery/jquery-3.7.1.min.js"></script>
   <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://kit.fontawesome.com/51b23194c0.js" crossorigin="anonymous"></script>
-  <script src="js/sistema/verificarArquivo.js"></script>
   <script src="./js/sistema/menu.js"></script>
 </body>
 
