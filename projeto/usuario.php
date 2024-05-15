@@ -62,18 +62,45 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   </div>
   <!--div main-->
   <div class="container">
-      <h2>Configurações do Usuário</h2>
-      <form action="atualizar_usuario.php" method="POST">
-        <div class="form-group">
-          <label for="nome">Alterar nome:</label>
-          <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu Nome">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mt-4 row">
+          <div class="col-md-4 d-flex justify-content-start">
+            <h4>Configurações do Usuário</h4>
+          </div>
+          <div class="col-md-4 d-flex justify-content-center">
+          </div>
+          <div class="col-md-4 d-flex justify-content-end">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
+                    <span>Home</span></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Usuário</li>
+              </ol>
+            </nav>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="senha">Alterar senha:</label>
-          <input type="password" class="form-control" id="senha" name="senha" placeholder="Sua Senha">
+        <hr>
+        <div class="row">
+          <div class="col d-flex justify-content-center">
+            <div class="container">
+              <form action="atualizar_usuario.php" method="POST">
+                <div class="form-group">
+                  <label for="nome">Alterar nome:</label>
+                  <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu Nome">
+                </div>
+                <div class="form-group">
+                  <label for="senha">Alterar senha:</label>
+                  <input type="password" class="form-control" id="senha" name="senha" placeholder="Sua Senha">
+                </div>
+                <button type="submit" class="btn mt-2 btn-primary">Salvar</button>
+              </form>
+            </div>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Salvar</button>
-      </form>
+        <hr>
+      </div>
+    </div>
   </div>
   <!--fim div main -->
   <!--modal de sobre -->

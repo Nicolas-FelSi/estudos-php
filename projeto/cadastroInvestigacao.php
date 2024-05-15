@@ -85,25 +85,6 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
           <div class="col-md-4 d-flex justify-content-center">
             <form enctype="multipart/form-data" method="post" accept-charset="utf-8" id="importa" role="form" action="salvarPlanilha.php">
               <div class="row">
-                <!-- <div class="col-md-12">
-                  <label for="eletrodo_importa" class="form-label">Eletrodo</label>
-                  <select name="eletrodo_importa" id="eletrodo_importa" class="form-select">
-
-                  </select>
-                </div>
-                <div class="col-md-12">
-                  <label for="polaridade_importa" class="form-label">Polaridade</label>
-                  <select name="polaridade_importa" id="polaridade_importa" class="form-select">
-                    <option value="1">Positiva</option>
-                    <option value="0">Negativa</option>
-                  </select>
-                </div>
-                <div class="col-md-12">
-                  <label for="operacao_importa" class="form-label">Operação</label>
-                  <select name="operacao_importa" id="operacao_importa" class="form-select">
-
-                  </select>
-                </div> -->
                 <div class="col-md-12">
                   <label for="idArquivo" class="form-label">Arquivo</label>
                   <input type="file" name="arquivo" id="idArquivo" class="form-control">
@@ -122,27 +103,6 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         <div class="alert alert-info alert-dismissible fade show" style="display: none;" id="div_mensagem_importa">
           <button type="button" class="btn-close btn-sm" aria-label="Close" id="div_mensagem_botao_importa"></button>
           <p id="div_mensagem_texto_importa"></p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!--modal de importação
-  <div class="modal fade" id="modal_importa" tabindex="-1" aria-labelledby="logoutlabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="logoutlabel_eletrodo">Pergunta</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Confirma importação de dados?
-          <input type="hidden" id="id_importa_eletrodo_modal" value="" />
-          <input type="hidden" id="id_importa_polaridade_modal" value="" />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="modal_importa_sim">Sim</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
         </div>
       </div>
     </div>

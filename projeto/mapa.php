@@ -65,7 +65,30 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         </nav>
     </div>
     <!--div main-->
-    <div class="container mt-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+        <div class="mt-4 row">
+          <div class="col-md-4 d-flex justify-content-start">
+            <h4>Mapa</h4>
+          </div>
+          <div class="col-md-4 d-flex justify-content-center">
+          </div>
+          <div class="col-md-4 d-flex justify-content-end">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
+                    <span>Home</span></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Mapa</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col d-flex justify-content-center">
+            <div class="container">
+            <div class="container mt-4">
         <div class="row">
             <div class="col">
                 <label for="filtro" class="form-label">Filtros:</label>
@@ -93,8 +116,8 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                 <select id="filtroHoraSelect" class="form-select">
                     
                 </select>
-            </div>
         </div>
+      </div>
     </div>
 
     <?php
@@ -102,27 +125,13 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         echo "<div id='map'></div>";
     }
     ?>
-
-    <!--modal de importação-->
-    <div class="modal fade" id="modal_importa" tabindex="-1" aria-labelledby="logoutlabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="logoutlabel_eletrodo">Pergunta</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Confirmar importação de dados?
-                    <input type="hidden" id="id_importa_eletrodo_modal" value="" />
-                    <input type="hidden" id="id_importa_polaridade_modal" value="" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="modal_importa_sim">Sim</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
-                </div>
             </div>
+          </div>
         </div>
+        <hr>
+      </div>
     </div>
+  </div>
     <!--fim div main-->
     <!--modal de sobre-->
     <div class="modal fade" id="sobre_modal" tabindex="-1" aria-labelledby="logoutlabel" aria-hidden="true">

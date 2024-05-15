@@ -136,5 +136,5 @@ $pdo = null;
 
 $_SESSION['mapa_importado'] = true;
 
-header("Location: mapa.php");
+header("Location: menu.php");
 exit();
