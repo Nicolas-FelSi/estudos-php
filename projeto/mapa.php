@@ -142,13 +142,12 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>solvEDM - Simulador de resultados para eletroerosão</p>
-                    <p>Desenvolvido no IFSC - Desde 2024–
+                    <p>SispegMa - Monitoramento de rotas.</p>
+                    <p>Desenvolvido no IFSC - Desde 2024 -
                         <script>
                             document.write(new Date().getFullYear())
                         </script>
                     </p>
-                    <p>Licença Creative Commons - Com direito de atribuição e não comercial</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>

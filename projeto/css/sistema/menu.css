@@ -1,9 +1,9 @@
 :root {
     --header-height: 3rem;
     --nav-width: 68px;
-    --first-color: #4723D9;
-    --first-color-light: #AFA5D9;
-    --white-color: #F7F6FB;
+    --first-color: #0c2b45;
+    --first-color-light: #e7eef6;
+    --white-color: #f3f3f3;
     --body-font: "Verdana", sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100;
