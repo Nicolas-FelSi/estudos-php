@@ -55,13 +55,6 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                 $resultado = $sql->fetch(PDO::FETCH_ASSOC);
                 $_SESSION['id_planilha'] = $resultado['id_planilha'];
 
-                // echo "<div class='alert alert-success' role='alert'>";
-                // echo "O arquivo $nomePlanilha foi enviado com sucesso.";
-                // echo "</div> ";
-                // echo "<div class='d-flex justify-content-evenly'>";
-                // echo "<a href='menu.php' class='btn btn-warning'>Voltar</a>";
-                // echo "<a class='btn btn-success' href='processarPlanilha.php'>Avançar</a>";
-                // echo "</div>";
                 header("Location: processarPlanilha.php");
                 
             }
