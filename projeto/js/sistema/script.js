@@ -40,10 +40,10 @@ $(document).ready(function () {
 			function bindPopupGenerico(marcador, data, hora, n_linha) {
 				const dataFormatada = moment(data).format('DD-MM-YYYY');
 				marcador.bindPopup(`
-        Dt: ${dataFormatada}<br>
-        Hr: ${hora}<br>
-        N° linha: ${n_linha}
-        `).openPopup();
+				Dt: ${dataFormatada}<br>
+				Hr: ${hora}<br>
+				N° linha: ${n_linha}
+				`).openPopup();
 			}
 
 			function exibirFiltroDataHora(filtro) {
@@ -105,33 +105,43 @@ $(document).ready(function () {
 			function mapaTempoDeParada(dadosJson) {
 				dadosCriarMapaPadrao();
 				exibirFiltroDataHora("tempoParada");
-
+			
 				// Variável para armazenar a última marca de tempo em que o carro ficou "off"
 				let primeiraParada = null;
-
-				dadosJson.forEach((dado) => {
-					const dataFormatada = moment(dado.data).format('DD-MM-YYYY');
-
-					if (dado.velocidade < 1 && primeiraParada === null) {
-						const dataHoraObjeto = new Date(dado.data + ' ' + dado.hora);
-						primeiraParada = new Date(dataHoraObjeto); // Atualiza a última parada
-					} else if (dado.velocidade > 0 && primeiraParada !== null) {
-						const dataHoraObjeto = new Date(dado.data + ' ' + dado.hora);
-						const dataInicioParada = primeiraParada;
-						const dataFimParada = new Date(dataHoraObjeto);
-						const duracaoParada = dataFimParada - dataInicioParada; // Converte de milissegundos para minutos
-						const pontoIgnicaoOn = L.marker([dado.latitude, dado.longitude]).addTo(map);
-
-						pontoIgnicaoOn.bindPopup(`
-						Data: ${dataFormatada}<br>
-						Hora: ${dado.hora}<br>
-						N° linha: ${dado.numero_linha}<br>
-						Tempo Parada: ${exibirTempoDeParada(duracaoParada)}<br>
-						`).openPopup();
-						primeiraParada = null; // Reseta a última parada
-					}
-				})
-
+			
+				function filtrarTempoParada() {
+					dadosCriarMapaPadrao();
+					// Obtém o valor mínimo de tempo de parada em minutos definido pelo usuário
+					const tempoMinimoParada = parseInt(document.getElementById('tempoMinimoParada').value, 10) * 60 * 1000;
+				
+					dadosJson.forEach((dado) => {
+						const dataFormatada = moment(dado.data).format('DD-MM-YYYY');
+				
+						if (dado.velocidade < 1 && primeiraParada === null) {
+							const dataHoraObjeto = new Date(dado.data + ' ' + dado.hora);
+							primeiraParada = new Date(dataHoraObjeto); // Atualiza a última parada
+						} else if (dado.velocidade > 0 && primeiraParada !== null) {
+							const dataHoraObjeto = new Date(dado.data + ' ' + dado.hora);
+							const dataInicioParada = primeiraParada;
+							const dataFimParada = new Date(dataHoraObjeto);
+							const duracaoParada = dataFimParada - dataInicioParada; // Em milissegundos
+				
+							if (duracaoParada >= tempoMinimoParada) { // Verifica se a duração da parada atende ao mínimo definido
+								const pontoIgnicaoOn = L.marker([dado.latitude, dado.longitude]).addTo(map);
+				
+								pontoIgnicaoOn.bindPopup(`
+								Data: ${dataFormatada}<br>
+								Hora: ${dado.hora}<br>
+								N° linha: ${dado.numero_linha}<br>
+								Tempo Parada: ${exibirTempoDeParada(duracaoParada)}<br>
+								`).openPopup();
+							}
+				
+							primeiraParada = null; // Reseta a última parada
+						}
+					});
+				}
+			
 				// Exibe as durações de parada
 				function exibirTempoDeParada(duracao) {
 					const horas = Math.floor(duracao / (1000 * 60 * 60));
@@ -139,93 +149,109 @@ $(document).ready(function () {
 					const segundos = Math.floor((duracao % (1000 * 60)) / 1000);
 					return `${acrescentarZero(horas)}:${acrescentarZero(minutos)}:${acrescentarZero(segundos)}`;
 				}
-
+			
 				function acrescentarZero(numero) {
 					return numero < 10 ? `0${numero}` : numero;
 				}
+
+				// Adiciona um listener de evento para detectar alterações nos inputs de data/hora
+				document.getElementById("aplicarFiltroTempoParada").addEventListener("click", filtrarTempoParada);
 			}
+
 
 			function mapaDataHora(dadosJson) {
 				dadosCriarMapaPadrao();
-				exibirFiltroDataHora("data_hora");
-			
-				// Função para agrupar as horas em intervalos de tempo
-				function obterIntervaloHora(hora) {
-					const horaInt = parseInt(hora);
-					if (horaInt >= 0 && horaInt < 6) {
-						return "00:00 - 06:00";
-					} else if (horaInt >= 6 && horaInt < 12) {
-						return "06:00 - 12:00";
-					} else if (horaInt >= 12 && horaInt < 18) {
-						return "12:00 - 18:00";
-					} else {
-						return "18:00 - 00:00";
-					}
-				}
-			
-				// Preencher o select de hora com os intervalos de tempo
-				const selectHora = document.getElementById('filtroHoraSelect');
-				const intervalosHora = ["00:00 - 06:00", "06:00 - 12:00", "12:00 - 18:00", "18:00 - 00:00"];
-				intervalosHora.forEach(intervalo => {
-					const option = document.createElement('option');
-					option.value = intervalo;
-					option.text = intervalo;
-					selectHora.appendChild(option);
-				});
-			
-				// Preencher o select de data com as datas únicas
-				const selectData = document.getElementById('filtroDataSelect');
+
+				// Obter datas únicas e exibir no texto
 				const datasUnicas = Array.from(new Set(dadosJson.map(dado => moment(dado.data).format('DD-MM-YYYY'))));
-				datasUnicas.forEach(data => {
-					const option = document.createElement('option');
-					option.value = data;
-					option.text = data;
-					selectData.appendChild(option);
-				});
-			
+				const datasDisponiveis = document.getElementById('datasDisponiveisDataHora');
+				datasDisponiveis.innerHTML = 'Datas disponíveis: ' + datasUnicas.join(', ');
+
+				// Função para filtrar os dados com base no intervalo definido pelo usuário
 				function filtrarDataHora() {
 					dadosCriarMapaPadrao();
-					const filtroData = document.getElementById("filtroDataSelect").value;
-					const filtroHora = document.getElementById("filtroHoraSelect").value;
-					const pontosNoIntervalo = dadosJson.filter(dado => {
-						const dataFormatada = moment(dado.data).format('DD-MM-YYYY');
-						const intervaloHora = obterIntervaloHora(dado.hora);
-						return filtroData === dataFormatada && filtroHora === intervaloHora;
-					});
-					if (pontosNoIntervalo.length > 0) {
-						const primeiraLatitude = pontosNoIntervalo[0].latitude;
-						const primeiraLongitude = pontosNoIntervalo[0].longitude;
-						const ultimaLatitude = pontosNoIntervalo[pontosNoIntervalo.length - 1].latitude;
-						const ultimaLongitude = pontosNoIntervalo[pontosNoIntervalo.length - 1].longitude;
-
-						const partida = L.marker([primeiraLatitude, primeiraLongitude]).addTo(map);
-						const chegada = L.marker([ultimaLatitude, ultimaLongitude]).addTo(map);
-
-						const coordenadasArray = pontosNoIntervalo.map(coordenada => [coordenada.latitude, coordenada.longitude]);
-
-						const primeiraLinha = pontosNoIntervalo[0].numero_linha;
-						const ultimaLinha = pontosNoIntervalo[pontosNoIntervalo.length - 1].numero_linha;
-
-						const primeiraData = pontosNoIntervalo[0].data;
-						const ultimaData = pontosNoIntervalo[pontosNoIntervalo.length - 1].data;
-						const primeiraHora = pontosNoIntervalo[0].hora;
-						const ultimaHora = pontosNoIntervalo[pontosNoIntervalo.length - 1].hora;
-
-						bindPopupGenerico(partida, primeiraData, primeiraHora, primeiraLinha);
-						bindPopupGenerico(chegada, ultimaData, ultimaHora, ultimaLinha);
-
-						const polyline = L.polyline(coordenadasArray, { color: 'red' }).addTo(map);
-
-						map.fitBounds(polyline.getBounds());
-						chegada.openPopup();
+					const filtroDataInicio = document.getElementById("filtroDataInicio").value;
+					const filtroDataFim = document.getElementById("filtroDataFim").value;
+					const filtroHoraInicio = document.getElementById("filtroHoraInicio").value;
+					const filtroHoraFim = document.getElementById("filtroHoraFim").value;
+			
+					if (filtroDataInicio && filtroDataFim && filtroHoraInicio && filtroHoraFim) {
+						const dataHoraInicio = moment(filtroDataInicio + ' ' + filtroHoraInicio);
+						const dataHoraFim = moment(filtroDataFim + ' ' + filtroHoraFim);
+			
+						const pontosNoIntervalo = dadosJson.filter(dado => {
+							const dataHoraDado = moment(dado.data + ' ' + dado.hora);
+							return dataHoraDado.isBetween(dataHoraInicio, dataHoraFim, null, '[]');
+						});
+			
+						if (pontosNoIntervalo.length > 0) {
+							const primeiraLatitude = pontosNoIntervalo[0].latitude;
+							const primeiraLongitude = pontosNoIntervalo[0].longitude;
+							const ultimaLatitude = pontosNoIntervalo[pontosNoIntervalo.length - 1].latitude;
+							const ultimaLongitude = pontosNoIntervalo[pontosNoIntervalo.length - 1].longitude;
+			
+							const partida = L.marker([primeiraLatitude, primeiraLongitude]).addTo(map);
+							const chegada = L.marker([ultimaLatitude, ultimaLongitude]).addTo(map);
+			
+							const coordenadasArray = pontosNoIntervalo.map(coordenada => [coordenada.latitude, coordenada.longitude]);
+			
+							const primeiraLinha = pontosNoIntervalo[0].numero_linha;
+							const ultimaLinha = pontosNoIntervalo[pontosNoIntervalo.length - 1].numero_linha;
+			
+							const primeiraData = pontosNoIntervalo[0].data;
+							const ultimaData = pontosNoIntervalo[pontosNoIntervalo.length - 1].data;
+							const primeiraHora = pontosNoIntervalo[0].hora;
+							const ultimaHora = pontosNoIntervalo[pontosNoIntervalo.length - 1].hora;
+			
+							bindPopupGenerico(partida, primeiraData, primeiraHora, primeiraLinha);
+							bindPopupGenerico(chegada, ultimaData, ultimaHora, ultimaLinha);
+			
+							const polyline = L.polyline(coordenadasArray, { color: 'red' }).addTo(map);
+			
+							map.fitBounds(polyline.getBounds());
+							chegada.openPopup();
+						}
 					}
 				}
 			
-				// Adiciona um listener de evento para detectar alterações no filtro
-				document.getElementById("filtroDataSelect").addEventListener("change", filtrarDataHora);
-				document.getElementById("filtroHoraSelect").addEventListener("change", filtrarDataHora);
+				// Adiciona um listener de evento para detectar alterações nos inputs de data/hora
+				document.getElementById("aplicarFiltroDataHora").addEventListener("click", filtrarDataHora);
 			}
 			
+			// Listener para exibir os filtros de data e hora quando a opção é selecionada
+			document.getElementById('filtro').addEventListener('change', function() {
+				const selectedFilter = this.value;
+			
+				if (selectedFilter === 'data_hora') {
+					document.getElementById('filtroDataHora').style.display = 'block';
+					document.getElementById('filtroTempoParada').style.display = 'none';
+					document.getElementById('exibirBtnFiltroDataHora').style.display = 'block';
+					document.getElementById('exibirBtnFiltroTempoParada').style.display = 'none';
+					limparCampos('#filtroDataHora input[type="date"], #filtroDataHora input[type="time"]');
+				} else if(selectedFilter === 'tempoParada'){
+					document.getElementById('filtroTempoParada').style.display = 'block';
+					document.getElementById('filtroDataHora').style.display = 'none';
+					document.getElementById('exibirBtnFiltroTempoParada').style.display = 'block';
+					document.getElementById('exibirBtnFiltroDataHora').style.display = 'none';
+				} else {
+					document.getElementById('filtroDataHora').style.display = 'none';
+					document.getElementById('filtroTempoParada').style.display = 'none';
+					document.getElementById('.exibirBtnFiltroDataHora').style.display = 'none';
+					document.getElementById('.exibirBtnFiltroTempoParada').style.display = 'none';
+				}
+			});
+
+			function limparCampos(nomeCampoId) {
+				const campos = document.querySelectorAll(nomeCampoId);
+				campos.forEach(input => {
+					input.value = ''; // Limpa o valor do campo
+				});
+			}
+			
+			// Chame a função ao carregar a página
+			document.addEventListener('DOMContentLoaded', function() {
+				mapaDataHora(dadosJson);
+			});
 	
 			// Função para carregar o mapa
 			function carregarMapa(filtro) {

@@ -66,72 +66,94 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
     </div>
     <!--div main-->
     <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-        <div class="mt-4 row">
-          <div class="col-md-4 d-flex justify-content-start">
-            <h4>Mapa</h4>
-          </div>
-          <div class="col-md-4 d-flex justify-content-center">
-          </div>
-          <div class="col-md-4 d-flex justify-content-end">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
-                    <span>Home</span></a></li>
-                <li class="breadcrumb-item active" aria-current="page">Mapa</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-        <hr>
         <div class="row">
-          <div class="col d-flex justify-content-center">
-            <div class="container">
-            <div class="container mt-4">
-        <div class="row">
-            <div class="col">
-                <label for="filtro" class="form-label">Filtros:</label>
-                <select id="filtro" class="form-select">
-                    <option value="padrao" selected>Padrão</option>
-                    <option value="data_hora">Data/Hora</option>
-                    <option value="tempoParada">Tempo de parada</option>
-                    <option value="motorDesligado">Motor desligado</option>
-                </select>
+            <div class="col-md-12">
+                <div class="mt-4 row">
+                    <div class="col-md-4 d-flex justify-content-start">
+                        <h4>Mapa</h4>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center">
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-end">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html" title="Home" id="home_index_importa"><i class="fas fa-home"></i><span>Home</span></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Mapa</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col d-flex justify-content-center">
+                        <div class="container">
+                            <div class="container mt-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="filtro" class="form-label">Filtros:</label>
+                                        <select id="filtro" class="form-select">
+                                            <option value="padrao" selected>Padrão</option>
+                                            <option value="data_hora">Data/Hora</option>
+                                            <option value="tempoParada">Tempo de parada</option>
+                                            <option value="motorDesligado">Motor desligado</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="filtroDataHora" class="row mt-3" style="display: none;">
+                                    <div class="col-12">
+                                        <p id="datasDisponiveisDataHora"></p>
+                                    </div>
+                                    <div class="col-sm-6 mt-3">
+                                        <label for="filtroDataInicio" class="form-label">Data Início:</label>
+                                        <input type="date" id="filtroDataInicio" class="form-control">
+                                    </div>
+                                    <div class="col-sm-6 mt-3">
+                                        <label for="filtroDataFim" class="form-label">Data Fim:</label>
+                                        <input type="date" id="filtroDataFim" class="form-control">
+                                    </div>
+                                    <div class="col-sm-6 mt-3">
+                                        <label for="filtroHoraInicio" class="form-label">Hora Início:</label>
+                                        <input type="time" id="filtroHoraInicio" class="form-control">
+                                    </div>
+                                    <div class="col-sm-6 mt-3">
+                                        <label for="filtroHoraFim" class="form-label">Hora Fim:</label>
+                                        <input type="time" id="filtroHoraFim" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div id="filtroTempoParada" class="row mt-3" style="display: none;">
+                                    <div class="col-sm-6 mt-3">
+                                        <label for="tempoMinimoParada" class="form-label">Tempo mínimo de parada (minutos):</label>
+                                        <input type="number" id="tempoMinimoParada" class="form-control" name="tempoMinimoParada" min="0" value="0">
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3" id="exibirBtnFiltroDataHora" style="display: none;">
+                                    <div class="col">
+                                        <button id="aplicarFiltroDataHora" class="btn btn-primary">Aplicar Filtro</button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3" id="exibirBtnFiltroTempoParada" style="display: none;">
+                                    <div class="col">
+                                        <button id="aplicarFiltroTempoParada" class="btn btn-primary">Filtrar</button>
+                                    </div>
+                                </div>
+
+                                <?php
+                                if ($_SESSION['mapa_importado']) {
+                                    echo "<div id='map' class='mt-4'></div>";
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
             </div>
         </div>
-
-        <div id="filtroData" class="row mt-3" style="display: none;">
-            <label for="filtroDataSelect" class="col-sm-2 col-form-label">Data:</label>
-            <div class="col-sm-10">
-                <select id="filtroDataSelect" class="form-select">
-                    
-                </select>
-            </div>
-        </div>
-
-        <div id="filtroHora" class="row mt-3" style="display: none;">
-            <label for="filtroHoraSelect" class="col-sm-2 col-form-label">Hora:</label>
-            <div class="col-sm-10">
-                <select id="filtroHoraSelect" class="form-select">
-                    
-                </select>
-        </div>
-      </div>
     </div>
-
-    <?php
-    if ($_SESSION['mapa_importado']) {
-        echo "<div id='map'></div>";
-    }
-    ?>
-            </div>
-          </div>
-        </div>
-        <hr>
-      </div>
-    </div>
-  </div>
     <!--fim div main-->
     <!--modal de sobre-->
     <div class="modal fade" id="sobre_modal" tabindex="-1" aria-labelledby="logoutlabel" aria-hidden="true">
