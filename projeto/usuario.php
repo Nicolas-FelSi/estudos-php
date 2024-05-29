@@ -41,7 +41,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
             <i class="fas fa-upload nav_icon"></i>
             <span class="nav_name">Importação</span>
           </a>
-          <a href="mapa.php" class="nav_link" title="Ponto" id="ponto_link">
+          <a href="mapa.php" class="nav_link disabled-link" title="Ponto" id="ponto_link">
             <i class="fas fa-map-marker-alt nav_icon"></i>
             <span class="nav_name">Pontos</span>
           </a>

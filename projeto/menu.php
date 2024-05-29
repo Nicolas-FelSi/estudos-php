@@ -40,7 +40,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
             <i class="fas fa-upload nav_icon"></i>
             <span class="nav_name">Importação</span>
           </a>
-          <a href="mapa.php" class="nav_link" title="Ponto" id="ponto_link">
+          <a href="mapa.php" class="nav_link disabled-link" title="Ponto" id="ponto_link">
             <i class="fas fa-map-marker-alt nav_icon"></i>
             <span class="nav_name">Pontos</span>
           </a>
@@ -83,16 +83,38 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         <div class="container mt-5">
           <ul class="list-group">
             <?php
-            // Recupera as importações do usuário atual
-            $idUsuario = $_SESSION['id_usuario'];
-            $sql = $pdo->prepare("SELECT nome_planilha, id_planilha FROM planilha WHERE fk_id_usuario = ?");
-            $sql->execute([$idUsuario]);
-            $importacoes = $sql->fetchAll(PDO::FETCH_ASSOC);
+              // Recupera as importações do usuário atual
+              $idUsuario = $_SESSION['id_usuario'];
+              $sql = $pdo->prepare("SELECT id_planilha, codigo, descricao FROM planilha WHERE fk_id_usuario = ?");
+              $sql->execute([$idUsuario]);
+              $importacoes = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-            // Exibe as importações
-            foreach ($importacoes as $importacao) {
-              echo '<li class="list-group-item">' . htmlspecialchars($importacao['nome_planilha']) . ' <a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a></li>';
-            }
+              if ($importacoes) {
+                echo '<table class="table table-bordered mt-5">';
+                echo '<thead class="thead-dark">';
+                echo '<tr>';
+                echo '<th>ID</th>';
+                echo '<th>Código</th>';
+                echo '<th>Descrição</th>';
+                echo '<th>Mapa</th>';
+                echo '</tr>';
+                echo '</thead>';
+                echo '<tbody>';
+                
+                foreach ($importacoes as $importacao) {
+                    echo '<tr>';
+                    echo '<td>' . htmlspecialchars($importacao['id_planilha']) . '</td>';
+                    echo '<td>' . htmlspecialchars($importacao['codigo']) . '</td>';
+                    echo '<td>' . htmlspecialchars($importacao['descricao']) . '</td>';
+                    echo '<td><a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a></td>';
+                    echo '</tr>';
+                }
+                
+                echo '</tbody>';
+                echo '</table>';
+              } else {
+                  echo 'Nenhuma importação encontrada.';
+              }
             ?>
           </ul>
         </div>

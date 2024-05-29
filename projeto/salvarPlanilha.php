@@ -40,12 +40,17 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                 // Arquivo não existe, fazer o upload
                 move_uploaded_file($file_tmp, "uploads/" . $nomePlanilha);
 
-                $idUsuario = $_SESSION['id_usuario'];                     
+                $idUsuario = $_SESSION['id_usuario'];          
+                
+                $codigo = $_POST["codigoInvestigacao"];
+                $descricao = $_POST["descricao"];
                 
                 // Insere o nome do arquivo no banco de dados
-                $sql = $pdo->prepare("INSERT INTO planilha (nome_planilha, fk_id_usuario) VALUES (:nome_planilha, :fk_id_usuario)");
-                $sql->bindParam(':nome_planilha', $nomePlanilha);
+                $sql = $pdo->prepare("INSERT INTO planilha (fk_id_usuario, nome_planilha, codigo, descricao) VALUES (:fk_id_usuario, :nome_planilha, :codigo, :descricao)");
                 $sql->bindParam(':fk_id_usuario', $idUsuario);
+                $sql->bindParam(':nome_planilha', $nomePlanilha);
+                $sql->bindParam(':codigo', $codigo);
+                $sql->bindParam(':descricao', $descricao);
                 $sql->execute();          
                 
                 $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE fk_id_usuario = :fk_id_usuario");

@@ -39,7 +39,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
             <i class="fas fa-upload nav_icon"></i>
             <span class="nav_name">Importação</span>
           </a>
-          <a href="mapa.php" class="nav_link" title="Ponto" id="ponto_link">
+          <a href="mapa.php" class="nav_link disabled-link" title="Ponto" id="ponto_link">
             <i class="fas fa-map-marker-alt nav_icon"></i>
             <span class="nav_name">Pontos</span>
           </a>
@@ -89,6 +89,20 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                   <label for="idArquivo" class="form-label">Arquivo</label>
                   <input type="file" name="arquivo" id="idArquivo" class="form-control">
                 </div>
+              </div>
+              <br>
+              <div class="row">
+                  <div class="col-md-12">
+                      <label for="codigoInvestigacao" class="form-label">Código da Investigação</label>
+                      <input type="text" name="codigoInvestigacao" id="codigoInvestigacao" required class="form-control">
+                  </div>
+              </div>
+              <br>
+              <div class="row">
+                  <div class="col-md-12">
+                      <label for="descricao" class="form-label">Descrição</label>
+                      <textarea name="descricao" id="descricao" class="form-control" rows="4"></textarea>
+                  </div>
               </div>
               <br>
               <input type="submit" id="botao_importa" class="btn btn-primary btn-sm" value="Importar">
