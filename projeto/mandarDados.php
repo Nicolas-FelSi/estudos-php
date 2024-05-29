@@ -6,7 +6,6 @@ ob_start();
 
 $_SESSION['mapa_importado'] = true;
 
-// $idPlanilha = $_SESSION['id_planilha'];
 $idPlanilhaGet = $_GET['id_planilha'];
 
 // Consulta SQL para selecionar latitude e longitude

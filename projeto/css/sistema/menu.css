@@ -9,6 +9,12 @@
     --z-fixed: 100;
 }
 
+.disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 *,
 ::before,
 ::after {
