@@ -38,30 +38,49 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                 echo "<a class='btn btn-warning' href='menu.php'>Voltar</a>";
             } else {
                 // Arquivo não existe, fazer o upload
-                move_uploaded_file($file_tmp, "uploads/" . $nomePlanilha);
 
-                $idUsuario = $_SESSION['id_usuario'];          
-                
+                //Verifica se a pasta "uploads" já existe
+                $uploads = 'uploads';
+
+                if (!file_exists($uploads)) {
+                    mkdir($uploads);
+                    move_uploaded_file($file_tmp, "uploads/" . $nomePlanilha); //Cria a nova pasta e move o arquivo
+                } else {
+                    move_uploaded_file($file_tmp, "uploads/" . $nomePlanilha); //Somente move o arquivo para a pasta já existente
+                }
+
+                $idUsuario = $_SESSION['id_usuario'];   
+                $descricao = $_POST["descricao"];       
                 $codigo = $_POST["codigoInvestigacao"];
-                $descricao = $_POST["descricao"];
-                
-                // Insere o nome do arquivo no banco de dados
-                $sql = $pdo->prepare("INSERT INTO planilha (fk_id_usuario, nome_planilha, codigo, descricao) VALUES (:fk_id_usuario, :nome_planilha, :codigo, :descricao)");
-                $sql->bindParam(':fk_id_usuario', $idUsuario);
-                $sql->bindParam(':nome_planilha', $nomePlanilha);
-                $sql->bindParam(':codigo', $codigo);
-                $sql->bindParam(':descricao', $descricao);
-                $sql->execute();          
-                
-                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE fk_id_usuario = :fk_id_usuario");
-                $sql->bindParam(':fk_id_usuario', $idUsuario);
-                $sql->execute();  
-                
-                $resultado = $sql->fetch(PDO::FETCH_ASSOC);
-                $_SESSION['id_planilha'] = $resultado['id_planilha'];
+                    
+                    // Execute a consulta
+                    $sql = "SELECT * FROM planilha WHERE codigo = :codigo";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindParam(':codigo', $codigo);
+                    $stmt->execute();
 
-                header("Location: processarPlanilha.php");
-                
+                    if ($stmt->rowCount() > 0) {
+                        $mensagem = "O código já está sendo utilizado. Informe outro.";
+                        echo "<script type='text/javascript'>alert('$mensagem'); window.history.back(); </script>";
+
+                    } else {
+                        // Insere o nome do arquivo no banco de dados
+                        $sql = $pdo->prepare("INSERT INTO planilha (fk_id_usuario, nome_planilha, codigo, descricao) VALUES (:fk_id_usuario, :nome_planilha, :codigo, :descricao)");
+                        $sql->bindParam(':fk_id_usuario', $idUsuario);
+                        $sql->bindParam(':nome_planilha', $nomePlanilha);
+                        $sql->bindParam(':codigo', $codigo);
+                        $sql->bindParam(':descricao', $descricao);
+                        $sql->execute();          
+                        
+                        $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE fk_id_usuario = :fk_id_usuario");
+                        $sql->bindParam(':fk_id_usuario', $idUsuario);
+                        $sql->execute();  
+                        
+                        $resultado = $sql->fetch(PDO::FETCH_ASSOC);
+                        $_SESSION['id_planilha'] = $resultado['id_planilha'];
+
+                        header("Location: processarPlanilha.php");
+                    }
             }
         } else {
             echo "<div class='alert alert-danger' role='alert'>";

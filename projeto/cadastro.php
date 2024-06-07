@@ -94,7 +94,6 @@ require "./conexao.php";
             &copy; 2024–<script>
                 document.write(new Date().getFullYear())
             </script>
-            | Sysconel - O Seu Sistema de Simulação
         </p>
     </footer>
 
