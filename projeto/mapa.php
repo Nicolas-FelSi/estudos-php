@@ -36,18 +36,14 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
     <div class="l-navbar" id="nav-bar">
         <nav class="navmenu">
             <div>
-                <a href="menu.php" class="nav_logo" title="Planilhas" id="planilhas_link">
+                <a href="menu.php" class="nav_logo" title="Mapas" id="planilhas_link">
                     <i class="fa-solid fa-globe nav_icon"></i>
-                    <span class="nav_logo-name">Planilhas</span>
+                    <span class="nav_logo-name">Mapas</span>
                 </a>
                 <div class="nav_list">
                     <a href="cadastroInvestigacao.php" class="nav_link" title="Importação de Dados" id="importa_link">
                         <i class="fas fa-upload nav_icon"></i>
                         <span class="nav_name">Importação</span>
-                    </a>
-                    <a href="mapa.php" class="nav_link disabled-link" title="Ponto" id="ponto_link">
-                        <i class="fas fa-map-marker-alt nav_icon"></i>
-                        <span class="nav_name">Pontos</span>
                     </a>
                     <a href="usuario.php" class="nav_link" title="Usuário" id="usuario_link">
                         <i class="fas fa-user-cog nav_icon"></i>
