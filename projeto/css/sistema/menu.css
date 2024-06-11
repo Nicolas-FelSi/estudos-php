@@ -55,6 +55,11 @@ a {
     cursor: pointer;
 }
 
+.header_user{
+    color: var(--first-color);
+    font-size: 1.0rem;
+}
+
 .l-navbar {
     position: fixed;
     top: 0;
