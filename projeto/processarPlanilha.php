@@ -98,8 +98,8 @@ try {
             $velocidade = str_replace(",", ".", $velocidade);
             
             if (!empty($latitude) && !empty($longitude) && !empty($dataPosicaoFloat)){
-                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE nome_planilha = :nome_planilha");
-                $sql->bindParam(':nome_planilha', $nomePlanilha);
+                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE codigo = :codigo");
+                $sql->bindParam(':codigo', $_SESSION['codigo']);
                 $sql->execute();
 
                 $resultado = $sql->fetch(PDO::FETCH_ASSOC); 
@@ -134,7 +134,7 @@ try {
 // Feche a conexão com o banco de dados
 $pdo = null;
 
-$_SESSION['mapa_importado'] = true;
+unset($_SESSION['codigo']);
 
 header("Location: menu.php");
 exit();

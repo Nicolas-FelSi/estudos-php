@@ -25,6 +25,13 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
       <i class="fas fa-bars" id="header-toggle"></i>
     </div>
     <div class="header_user">
+      <i class="fas fa-user nav_name">
+          <?php
+            if (isset($_SESSION["nome"])) {
+              echo $_SESSION["nome"];
+            }
+          ?>  
+      </i>
     </div>
   </header>
   <div class="l-navbar" id="nav-bar">

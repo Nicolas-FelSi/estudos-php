@@ -104,14 +104,18 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                 echo '</thead>';
                 echo '<tbody>';
                 
-                foreach ($importacoes as $importacao) {
-                    echo '<tr>';
-                    echo '<td>' . htmlspecialchars($importacao['id_planilha']) . '</td>';
-                    echo '<td>' . htmlspecialchars($importacao['codigo']) . '</td>';
-                    echo '<td>' . htmlspecialchars($importacao['descricao']) . '</td>';
-                    echo '<td><a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a></td>';
-                    echo '</tr>';
+                foreach ($importacoes as $importacao) {          
+                  echo '<tr>';
+                  echo '<td>' . htmlspecialchars($importacao['id_planilha']) . '</td>';
+                  echo '<td>' . htmlspecialchars($importacao['codigo']) . '</td>';
+                  echo '<td>' . htmlspecialchars($importacao['descricao']) . '</td>';
+                  echo '<td>';
+                  echo '<a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a> ';
+                  echo '<button class="btn btn-danger btn-sm" onclick="confirmDelete(' . htmlspecialchars($importacao['id_planilha']) . ')">Excluir</button>';
+                  echo '</td>';
+                  echo '</tr>';
                 }
+              
                 
                 echo '</tbody>';
                 echo '</table>';
@@ -176,6 +180,14 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://kit.fontawesome.com/51b23194c0.js" crossorigin="anonymous"></script>
   <script src="./js/sistema/menu.js"></script>
+  <script>
+    function confirmDelete(id) {
+        if (confirm("Você tem certeza que deseja excluir este mapa?")) {
+            window.location.href = 'excluirMapa.php?id_planilha=' + id;
+        }
+    }
+  </script>
+
 </body>
 
 </html>
