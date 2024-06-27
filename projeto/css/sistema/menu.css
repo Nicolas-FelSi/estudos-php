@@ -58,6 +58,7 @@ a {
 .header_user{
     color: var(--first-color);
     font-size: 1.0rem;
+    width: 400px;
 }
 
 .l-navbar {

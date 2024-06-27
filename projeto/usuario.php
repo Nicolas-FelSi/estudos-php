@@ -7,6 +7,27 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   header("Location: login.php");
   exit();
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_SESSION["id_usuario"];
+    $novoNome = $_POST['nome'];
+    $novaSenha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+
+    $sql = "UPDATE usuario SET nome = :nome, senha = :senha WHERE id_usuario = :id";
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':nome', $novoNome);
+        $stmt->bindParam(':senha', $novaSenha);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        echo "<script>alert('Dados atualizados com sucesso!')</script>";
+    } catch (PDOException $e) {
+        echo "Erro ao atualizar os dados: " . $e->getMessage();
+    }
+}
+
 ?>
 
 <!doctype html>
@@ -87,7 +108,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         <div class="row">
           <div class="col d-flex justify-content-center">
             <div class="container">
-              <form action="atualizar_usuario.php" method="POST">
+              <form action="usuario.php" method="POST">
                 <div class="form-group">
                   <label for="nome">Alterar nome:</label>
                   <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu Nome">
