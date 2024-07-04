@@ -46,6 +46,15 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                     mkdir($uploads);
                     move_uploaded_file($file_tmp, "uploads/" . $nomePlanilha); //Cria a nova pasta e move o arquivo
                 } else {
+                    function delFiles($uploads) {
+                        $files = array_diff(scandir($uploads), array('.', '..'));
+                        foreach ($files as $file) {
+                            (is_file("$uploads/$files")); {
+                                unlink("$uploads/$file"); 
+                            } 
+                        }
+                    }
+                    delFiles('uploads/');
                     move_uploaded_file($file_tmp, "uploads/" . $nomePlanilha); //Somente move o arquivo para a pasta já existente
                 }
 
