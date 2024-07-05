@@ -73,8 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <i class="fas fa-user-cog nav_icon"></i>
             <span class="nav_name">Usuário</span>
           </a>
-          <a href="#" class="nav_link" title="Sobre" id="sobre_link">
+          <a href="help.php" class="nav_link" title="Ajuda" id="ajuda_link">
             <i class="fas fa-question-circle nav_icon"></i>
+            <span class="nav_name">Ajuda</span>
+          </a>
+          <a href="#" class="nav_link" title="Sobre" id="sobre_link">
+            <i class="fas fa-search nav_icon"></i>
             <span class="nav_name">Sobre</span>
           </a>
         </div>
