@@ -134,6 +134,8 @@ h6 {
   font-size: 1rem;
 }
 p {
+  color: #000;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin-top: 0;
   margin-bottom: 1rem;
 }
@@ -204,7 +206,7 @@ sup {
 }
 a {
   color: #72b7d6;
-  text-decoration: underline;
+  text-decoration: none;
 }
 a:hover {
   color: #72b7d6;
