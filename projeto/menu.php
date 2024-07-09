@@ -78,7 +78,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
           <div class="col-md-4 d-flex justify-content-end">
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
+                <li class="breadcrumb-item"><a href="index.php" title="Home" id="home_index_importa"><i class="fas fa-home"></i>
                     <span>Home</span></a></li>
                 <li class="breadcrumb-item active" aria-current="page">Mapas</li>
               </ol>

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 
 <head>
-    <title>RotaTrack: Sistema de Gestão de Rotas</title>
+    <title>RotaTrack - Sistema de Gestão de Rotas</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,7 +14,7 @@
     <header id="topo">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">RotaTrack: Sistema de Gestão de Rotas</a>
+                <a class="navbar-brand" href="index.php">RotaTrack</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -36,7 +36,7 @@
                     <a href="menu.php#">
                         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
                             <title>Importação de dados</title>
-                            <rect width="100%" height="100%" fill="#ffa43a" />
+                            <rect width="100%" height="100%" fill="#69d2cd" />
                         </svg>
                         <p>Importação de dados</p>
                     </a>
@@ -46,7 +46,7 @@
                     <a href="usuario.php">
                         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
                             <title>Dados existentes</title>
-                            <rect width="100%" height="100%" fill="#d6a735" />
+                            <rect width="100%" height="100%" fill="#f1f6ce" />
                         </svg>
                         <p>Dados existentes</p>
                     </a>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="col-md-5">
                     <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>RotaTrack: Sistema de Gestão de Rotas</title>
+                        <title>RotaTrack - Sistema de Gestão de Rotas</title>
                         <rect width="100%" height="100%" fill="#eee" />
                         <text x="50%" y="50%" fill="#aaa" dy=".3em">RotaTrack</text>
                     </svg>
@@ -96,7 +96,7 @@
             &copy; 2024–<script>
                 document.write(new Date().getFullYear())
                 </script>
-            | RotaTrack: Sistema de Gestão de Rotas
+            RotaTrack - Sistema de Gestão de Rotas
         </p>
         <div class="text-center">
             <p>
