@@ -31,13 +31,12 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
             <i class="fas fa-bars" id="header-toggle"></i>
         </div>
         <div class="header_user">
-            <i class="fas fa-user nav_name">
+            <i class="fa-solid fa-user"></i>
             <?php
                 if (isset($_SESSION["nome"])) {
-                    echo $_SESSION["nome"];
+                echo $_SESSION["nome"];
                 }
             ?>  
-            </i>
         </div>
     </header>
     <div class="l-navbar" id="nav-bar">
@@ -111,23 +110,32 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                                     <div class="col-12">
                                         <p id="datasDisponiveisDataHora"></p>
                                     </div>
-                                    <div class="col-sm-6 mt-3">
-                                        <label for="filtroDataInicio" class="form-label">Data Início:</label>
-                                        <input type="date" id="filtroDataInicio" class="form-control">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-sm-12 mt-3">
+                                                <label for="filtroDataInicio" class="form-label">Data Início:</label>
+                                                <input type="date" id="filtroDataInicio" class="form-control">
+                                            </div>
+                                            <div class="col-sm-12 mt-3">
+                                                <label for="filtroDataFim" class="form-label">Data Fim:</label>
+                                                <input type="date" id="filtroDataFim" class="form-control">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6 mt-3">
-                                        <label for="filtroDataFim" class="form-label">Data Fim:</label>
-                                        <input type="date" id="filtroDataFim" class="form-control">
-                                    </div>
-                                    <div class="col-sm-6 mt-3">
-                                        <label for="filtroHoraInicio" class="form-label">Hora Início:</label>
-                                        <input type="time" id="filtroHoraInicio" class="form-control">
-                                    </div>
-                                    <div class="col-sm-6 mt-3">
-                                        <label for="filtroHoraFim" class="form-label">Hora Fim:</label>
-                                        <input type="time" id="filtroHoraFim" class="form-control">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-sm-12 mt-3">
+                                                <label for="filtroHoraInicio" class="form-label">Hora Início:</label>
+                                                <input type="time" id="filtroHoraInicio" class="form-control">
+                                            </div>
+                                            <div class="col-sm-12 mt-3">
+                                                <label for="filtroHoraFim" class="form-label">Hora Fim:</label>
+                                                <input type="time" id="filtroHoraFim" class="form-control">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
 
                                 <div id="filtroTempoParada" class="row mt-3" style="display: none;">
                                     <div class="col-sm-6 mt-3">

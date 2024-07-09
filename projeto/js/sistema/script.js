@@ -223,7 +223,7 @@ $(document).ready(function () {
 				const selectedFilter = this.value;
 			
 				if (selectedFilter === 'data_hora') {
-					document.getElementById('filtroDataHora').style.display = 'block';
+					document.getElementById('filtroDataHora').style.display = 'flex';
 					document.getElementById('filtroTempoParada').style.display = 'none';
 					document.getElementById('exibirBtnFiltroDataHora').style.display = 'block';
 					document.getElementById('exibirBtnFiltroTempoParada').style.display = 'none';

@@ -32,33 +32,33 @@
         <div class="container marketing">
             <!-- Três colunas complementares com os dados do carrossel -->
             <div class="row">
-                <div class="col-lg-4" style="padding: 100px;">
+                <div class="col-lg-4" style="padding: 50px;">
                     <a href="menu.php#">
                         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
                             <title>Importação de dados</title>
-                            <rect width="100%" height="100%" fill="#69d2cd" />
+                            <rect width="100%" height="100%" fill="#ffa43a" />
                         </svg>
-                        <p>Importação</p>
+                        <p>Importação de dados</p>
                     </a>
                 </div>
                 <!-- /.col-lg-4 -->
-                <div class="col-lg-4" style="padding: 100px;">
+                <div class="col-lg-4" style="padding: 50px;">
                     <a href="usuario.php">
                         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
                             <title>Dados existentes</title>
-                            <rect width="100%" height="100%" fill="#b9f1d6" />
+                            <rect width="100%" height="100%" fill="#d6a735" />
                         </svg>
-                        <p>Importações Existentes</p>
+                        <p>Dados existentes</p>
                     </a>
                 </div>
                 <!-- /.col-lg-4 -->
-                <div class="col-lg-4" style="padding: 100px;">
+                <div class="col-lg-4" style="padding: 50px;">
                     <a href="usuario.php">
                         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
                             <title>Informações do Usuário</title>
-                            <rect width="100%" height="100%" fill="#f1f6ce" />
+                            <rect width="100%" height="100%" fill="#a7a7a7" />
                         </svg>
-                        <p>Dados do Usuário</p>
+                        <p>Informações do Usuário</p>
                     </a>
                 </div>
                 <!-- /.col-lg-4 -->

@@ -3,6 +3,10 @@
     margin-top: 1rem;
 }
 
+.data-hora-flex {
+	display: flex;
+}
+
 /* GLOBAL STYLES
 -------------------------------------------------- */
 .bd-placeholder-img {

@@ -48,13 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <i class="fas fa-bars" id="header-toggle"></i>
     </div>
     <div class="header_user">
-        <i class="fas fa-user nav_name">
-          <?php
-          if (isset($_SESSION["nome"])) {
-            echo $_SESSION["nome"];
-          }
-        ?>  
-        </i>
+      <i class="fa-solid fa-user"></i>
+      <?php
+        if (isset($_SESSION["nome"])) {
+          echo $_SESSION["nome"];
+        }
+      ?>  
     </div>
   </header>
   <div class="l-navbar" id="nav-bar">
