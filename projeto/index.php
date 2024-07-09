@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 
 <head>
-    <title>Sistema de Rastreamento</title>
+    <title>RotaTrack: Sistema de Gestão de Rotas</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,13 +14,13 @@
     <header id="topo">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">SispegMa</a>
+                <a class="navbar-brand" href="index.php">RotaTrack: Sistema de Gestão de Rotas</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html"><i class="fa-solid fa-house"></i>&nbsp;Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php"><i class="fa-solid fa-house"></i>&nbsp;Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="login.php"><i class="fa-solid fa-id-card"></i>&nbsp;Login</a></li>
                     </ul>
                 </div>
@@ -77,9 +77,9 @@
                 </div>
                 <div class="col-md-5">
                     <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>SispegMa</title>
+                        <title>RotaTrack: Sistema de Gestão de Rotas</title>
                         <rect width="100%" height="100%" fill="#eee" />
-                        <text x="50%" y="50%" fill="#aaa" dy=".3em">SispegMa</text>
+                        <text x="50%" y="50%" fill="#aaa" dy=".3em">RotaTrack</text>
                     </svg>
                 </div>
             </div>
@@ -96,7 +96,7 @@
             &copy; 2024–<script>
                 document.write(new Date().getFullYear())
                 </script>
-            | SispegMa
+            | RotaTrack: Sistema de Gestão de Rotas
         </p>
         <div class="text-center">
             <p>
