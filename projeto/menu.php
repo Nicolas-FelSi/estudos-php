@@ -148,7 +148,8 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Desenvolvido no IFSC - Desde 2024–
+          <p>RotaTrack - Sistema de Gestão de Rotas</p>
+          <p>Desenvolvido no IFSC - Desde 2024 –
             <script>
               document.write(new Date().getFullYear())
             </script>

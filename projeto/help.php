@@ -86,10 +86,11 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         </div>
         <hr>
         <div class="container mt-5">
-            <a href="/projeto/docs/manual-usuario.pdf">Clique para realizar download do <u><b>Manual do Usuário</b></u> detalhado.</a>
+            <a href="docs/manual-usuario.pdf" download="manual-usuario.pdf">Clique para realizar download do <u><b>Manual do Usuário</b></u> detalhado.</a>
 
             <p>Mais instruções abaixo.</p>
         </div>
+        <br>
         <hr>
         <div class="container mt-5">
             <h4>Acesso ao sistema</h4>
@@ -138,8 +139,8 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                 </p>
         </div> 
       </div>
-      <hr>
     </div>
+    <hr>
   </div>
   <!--fim div -->
   <!--modal de sobre-->
@@ -151,7 +152,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>SispegMa - Monitoramento de rotas.</p>
+                    <p>RotaTrack - Sistema de Gestão de Rotas</p>
                     <p>Desenvolvido no IFSC - Desde 2024 -
                         <script>
                             document.write(new Date().getFullYear())
@@ -182,6 +183,17 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
             </div>
         </div>
     </div>
+    <footer class="container">
+      <p class="float-end">
+          <a href="#topo">Voltar ao topo</a>
+      </p>
+        <p>
+            &copy; 2024–<script>
+                document.write(new Date().getFullYear())
+                </script>
+            RotaTrack - Sistema de Gestão de Rotas
+        </p>
+    </footer>
     <script src="./js/jquery/jquery-3.7.1.min.js"></script>
     <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/51b23194c0.js" crossorigin="anonymous"></script>
