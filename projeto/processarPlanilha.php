@@ -26,6 +26,7 @@ try {
     $velocidadeColumnIndex = -1;
     $ignicaoColumnIndex = -1;
     $dataPosicaoColumnIndex = -1;
+    $horaPosicaoColumnIndex = -1;
 
     //Itera pelas células de todas as linhas para encontrar as colunas necessárias
     foreach ($sheet->getRowIterator() as $row) {
@@ -44,21 +45,23 @@ try {
                 $velocidadeColumnIndex = $cell->getColumn();      
             } elseif (strpos($cellValue, 'ignição') !== false && $ignicaoColumnIndex == -1) {
                 $ignicaoColumnIndex = $cell->getColumn();
-            } elseif (strpos($cellValue, 'data da posição') !== false && $dataPosicaoColumnIndex == -1) {
+            } elseif (strpos($cellValue, 'data') !== false && $dataPosicaoColumnIndex == -1) {
+                $dataPosicaoColumnIndex = $cell->getColumn();
+            } elseif (strpos($cellValue, 'hora') !== false && $horaPosicaoColumnIndex == -1) {
                 $dataPosicaoColumnIndex = $cell->getColumn();
             }
         }
 
         // Se as colunas forem encontradas, pare de procurar
         if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && 
-        $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
+        $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1 && $horaPosicaoColumnIndex !== -1) {
             break;
         }
     }
 
     // Verifica se as colunas foram encontradas
     if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && 
-    $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
+    $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1 && $horaPosicaoColumnIndex !== -1) {
         
         // Itera pelas linhas para obter os dados e inseri-los no banco de dados
         foreach ($sheet->getRowIterator() as $row) {
@@ -69,23 +72,24 @@ try {
             $velocidade = $sheet->getCell($velocidadeColumnIndex . $row->getRowIndex())->getValue();
             $ignicao = $sheet->getCell($ignicaoColumnIndex . $row->getRowIndex())->getValue();
             $dataPosicaoFloat = $sheet->getCell($dataPosicaoColumnIndex . $row->getRowIndex())->getValue();
+            $horaPosicaoTime = $sheet->getCell($horaPosicaoColumnIndex . $row->getRowIndex())->getValue();
             
-            if ($latitude == "Latitude" || $dataPosicaoFloat == null) {
+            if ($latitude == "Latitude" || $dataPosicaoFloat == null && $horaPosicaoTime == null) {
                 continue;
             }
                      
-            $days = floor($dataPosicaoFloat);
-            $fraction = $dataPosicaoFloat - $days;
-            $seconds = floor(86400 * $fraction);
-            $date = date('Y-m-d H:i:s', strtotime("1899-12-30 + $days days + $seconds seconds"));
+            //$days = $dataPosicaoFloat;
+            //$fraction = $dataPosicaoFloat - $days;
+            //$seconds = floor(86400 * $fraction);
+            //$date = date('Y-m-d H:i:s', strtotime("1899-12-30 + $days days + $seconds seconds"));
             
             // Separa a string em data e hora usando espaço como delimitador
-            $partes = explode(' ', $date);
+            //$partes = explode(' ', $date);
             
             // $partes[0] conterá a data e $partes[1] conterá a hora
             
-            $data = $partes[0];
-            $hora = $partes[1];
+            $data = $dataPosicaoFloat;
+            $hora = $horaPosicaoTime;
 
             if ($ignicao === "OFF") {
                 $ignicao = 0;
@@ -97,7 +101,7 @@ try {
             $longitude = str_replace(",", ".", $longitude);
             $velocidade = str_replace(",", ".", $velocidade);
             
-            if (!empty($latitude) && !empty($longitude) && !empty($dataPosicaoFloat)){
+            if (!empty($latitude) && !empty($longitude) && !empty($dataPosicaoFloat) && !empty($horaPosicaoTime)){
                 $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE codigo = :codigo");
                 $sql->bindParam(':codigo', $_SESSION['codigo']);
                 $sql->execute();

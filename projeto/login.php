@@ -14,7 +14,7 @@
 <html lang="pt-BR">
 
 <head>
-    <title>Monitoramento de Rotas</title>
+    <title>Gestão de Rotas</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,7 +27,7 @@
     <header id="topo">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">RotaTrack: Sistema de Gestão de Rotas</a>
+                <a class="navbar-brand" href="index.html">RotaTrack</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

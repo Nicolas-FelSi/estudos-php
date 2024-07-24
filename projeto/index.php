@@ -71,7 +71,7 @@
             <div class="row featurette">
                 <div class="col-md-7">
                     <h2 class="featurette-heading">
-                        Rastreamento de veículos e <span class="text-muted"> monitoramento de rotas. </span>
+                        Rastreamento de veículos e <span class="text-muted"> gestão de rotas. </span>
                     </h2>
                     <p class="lead">Importação, tratamento de dados e criação de mapas.</p>
                 </div>
@@ -99,9 +99,9 @@
             RotaTrack - Sistema de Gestão de Rotas
         </p>
         <div class="text-center">
-            <p>
+        <!--    <p>
                 <img src="./imagens/cc-by-nc_icon_100.svg.png" title="Creative Commons" />
-            </p>
+            </p> -->
         </div>
     </footer>
     
