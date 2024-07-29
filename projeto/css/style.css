@@ -87,6 +87,10 @@ body {
 	letter-spacing: -.05rem;
 }
 
+input[type="date"]:disabled {
+	background-color: #e9e9e9;
+}
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 @media ( min-width : 40em) {

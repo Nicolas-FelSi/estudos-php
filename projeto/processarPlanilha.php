@@ -26,7 +26,6 @@ try {
     $velocidadeColumnIndex = -1;
     $ignicaoColumnIndex = -1;
     $dataPosicaoColumnIndex = -1;
-    $horaPosicaoColumnIndex = -1;
 
     //Itera pelas células de todas as linhas para encontrar as colunas necessárias
     foreach ($sheet->getRowIterator() as $row) {
@@ -45,23 +44,21 @@ try {
                 $velocidadeColumnIndex = $cell->getColumn();      
             } elseif (strpos($cellValue, 'ignição') !== false && $ignicaoColumnIndex == -1) {
                 $ignicaoColumnIndex = $cell->getColumn();
-            } elseif (strpos($cellValue, 'data') !== false && $dataPosicaoColumnIndex == -1) {
-                $dataPosicaoColumnIndex = $cell->getColumn();
-            } elseif (strpos($cellValue, 'hora') !== false && $horaPosicaoColumnIndex == -1) {
+            } elseif (strpos($cellValue, 'data da posição') !== false && $dataPosicaoColumnIndex == -1) {
                 $dataPosicaoColumnIndex = $cell->getColumn();
             }
         }
 
         // Se as colunas forem encontradas, pare de procurar
         if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && 
-        $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1 && $horaPosicaoColumnIndex !== -1) {
+        $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
             break;
         }
     }
 
     // Verifica se as colunas foram encontradas
     if ($latitudeColumnIndex !== -1 && $longitudeColumnIndex !== -1 && $velocidadeColumnIndex !== -1 && 
-    $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1 && $horaPosicaoColumnIndex !== -1) {
+        $ignicaoColumnIndex !== -1 && $dataPosicaoColumnIndex !== -1) {
         
         // Itera pelas linhas para obter os dados e inseri-los no banco de dados
         foreach ($sheet->getRowIterator() as $row) {
@@ -72,24 +69,35 @@ try {
             $velocidade = $sheet->getCell($velocidadeColumnIndex . $row->getRowIndex())->getValue();
             $ignicao = $sheet->getCell($ignicaoColumnIndex . $row->getRowIndex())->getValue();
             $dataPosicaoFloat = $sheet->getCell($dataPosicaoColumnIndex . $row->getRowIndex())->getValue();
-            $horaPosicaoTime = $sheet->getCell($horaPosicaoColumnIndex . $row->getRowIndex())->getValue();
             
-            if ($latitude == "Latitude" || $dataPosicaoFloat == null && $horaPosicaoTime == null) {
+            if ($latitude == "Latitude" || $dataPosicaoFloat == null) {
                 continue;
             }
                      
-            //$days = $dataPosicaoFloat;
-            //$fraction = $dataPosicaoFloat - $days;
-            //$seconds = floor(86400 * $fraction);
-            //$date = date('Y-m-d H:i:s', strtotime("1899-12-30 + $days days + $seconds seconds"));
+            $dias = floor($dataPosicaoFloat);
+            $fracao = $dataPosicaoFloat - $dias;
+            $segundos = floor(86400 * $fracao);
+            $data = date('Y-m-d H:i:s', strtotime("1899-12-30 + $dias days + $segundos seconds"));
             
             // Separa a string em data e hora usando espaço como delimitador
-            //$partes = explode(' ', $date);
+            $partes = explode(' ', $data);
             
             // $partes[0] conterá a data e $partes[1] conterá a hora
             
-            $data = $dataPosicaoFloat;
-            $hora = $horaPosicaoTime;
+            $data = $partes[0];
+            $hora = $partes[1];
+
+            // Verifica o formato de data selecionado
+            $formatoData = $_SESSION['formatoData'];
+
+            if (!($formatoData == 'Brasileira')) {
+                // Inverte dia e mês para formato brasileiro (yyyy-mm-dd)
+                list($ano, $dia ,$mes) = explode('-', $data);
+                $dataFormatada = $ano . '-' . $mes . '-' . $dia;
+            } else {
+                // Formato brasileiro já está no formato correto (yyyy-mm-dd)
+                $dataFormatada = $data;
+            }
 
             if ($ignicao === "OFF") {
                 $ignicao = 0;
@@ -101,7 +109,7 @@ try {
             $longitude = str_replace(",", ".", $longitude);
             $velocidade = str_replace(",", ".", $velocidade);
             
-            if (!empty($latitude) && !empty($longitude) && !empty($dataPosicaoFloat) && !empty($horaPosicaoTime)){
+            if (!empty($latitude) && !empty($longitude) && !empty($dataPosicaoFloat)){
                 $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE codigo = :codigo");
                 $sql->bindParam(':codigo', $_SESSION['codigo']);
                 $sql->execute();
@@ -116,7 +124,7 @@ try {
                 $sql->bindParam(':longitude', $longitude);
                 $sql->bindParam(':velocidade', $velocidade);
                 $sql->bindParam(':ignicao', $ignicao);
-                $sql->bindParam(':data', $data);
+                $sql->bindParam(':data', $dataFormatada);
                 $sql->bindParam(':hora', $hora);
                 $sql->bindParam(':numero_linha', $numeroLinha);
                 $sql->execute();
@@ -138,7 +146,7 @@ try {
 // Feche a conexão com o banco de dados
 $pdo = null;
 
-unset($_SESSION['codigo']);
+unset($_SESSION['codigo'], $_SESSION['formatoData']);
 
 header("Location: menu.php");
 exit();

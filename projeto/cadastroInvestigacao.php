@@ -93,7 +93,17 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
               <div class="row">
                 <div class="col-md-12">
                   <label for="idArquivo" class="form-label">Arquivo</label>
-                  <input type="file" name="arquivo" id="idArquivo" class="form-control">
+                  <input required type="file" name="arquivo" id="idArquivo" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 mt-4">
+                  <label for="idFormatoData" class="form-label">Formato da data</label>
+                  <select required type="select" name="formatoData" id="idFormatoData" class="form-select">
+                    <option value="" selected disabled>Selecione um formato de data</option>
+                    <option value="Brasileira">Brasileira (DD/MM/AAAA)</option>
+                    <option value="Norte-americana">Norte-americana (MM/DD/AAAA)</option>
+                  </select>
                 </div>
               </div>
               <br>

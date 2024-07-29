@@ -61,6 +61,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                 $idUsuario = $_SESSION['id_usuario'];   
                 $descricao = $_POST["descricao"];       
                 $_SESSION['codigo'] = $_POST["codigoInvestigacao"];
+                $_SESSION['formatoData'] = $_POST['formatoData'];
                     
                 // Execute a consulta do codigo
                 $sql = "SELECT * FROM planilha WHERE codigo = :codigo";
