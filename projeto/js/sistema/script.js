@@ -37,6 +37,21 @@ $(document).ready(function () {
 				}).addTo(map);
 			}
 
+			function acharCoordenadaMaisProxima(latlng, coordenadas) {
+				let distanciaMaisProxima = Infinity;
+				let coordenadaMaisProxima = null;
+	  
+				coordenadas.forEach(coordenada => {
+				  const distance = latlng.distanceTo([coordenada.latitude, coordenada.longitude]);
+				  if (distance < distanciaMaisProxima) {
+					distanciaMaisProxima = distance;
+					coordenadaMaisProxima = coordenada;
+				  }
+				});
+	  
+				return coordenadaMaisProxima;
+			  }
+
 			function bindPopupGenerico(marcador, data, hora, n_linha) {
 				const dataFormatada = moment(data).format('DD-MM-YYYY');
 				marcador.bindPopup(`
@@ -81,10 +96,25 @@ $(document).ready(function () {
 				const ultimaHora = coordenadas[coordenadas.length - 1].hora;
 
 				bindPopupGenerico(partida, primeiraData, primeiraHora, primeiraLinha);
-
 				bindPopupGenerico(chegada, ultimaData, ultimaHora, ultimaLinha);
 
 				const polyline = L.polyline(coordenadasArray, { color: 'red' }).addTo(map);
+		  
+				// Adiciona o evento de clique na linha da rota
+				polyline.on('click', function (e) {
+				const latlngClicada = e.latlng;
+				const coordenadaMaisProxima = acharCoordenadaMaisProxima(latlngClicada, coordenadas);
+		
+				const popupContent = `
+					<p>Data: ${moment(coordenadaMaisProxima.data).format('DD-MM-YYYY')}</p>
+					<p>Hora: ${coordenadaMaisProxima.hora}</p>
+					<p>N° linha: ${coordenadaMaisProxima.numero_linha}</p>
+				`;
+				L.popup()
+					.setLatLng(latlngClicada)
+					.setContent(popupContent)
+					.openOn(map);
+				});
 
 				map.fitBounds(polyline.getBounds());
 				chegada.openPopup();
@@ -207,6 +237,22 @@ $(document).ready(function () {
 							bindPopupGenerico(chegada, ultimaData, ultimaHora, ultimaLinha);
 			
 							const polyline = L.polyline(coordenadasArray, { color: 'red' }).addTo(map);
+
+							// Adiciona o evento de clique na linha da rota
+							polyline.on('click', function (e) {
+								const latlngClicada = e.latlng;
+								const coordenadaMaisProxima = acharCoordenadaMaisProxima(latlngClicada, pontosNoIntervalo);
+					
+								const popupContent = `
+								<p>Data: ${moment(coordenadaMaisProxima.data).format('DD-MM-YYYY')}</p>
+								<p>Hora: ${coordenadaMaisProxima.hora}</p>
+								<p>N° linha: ${coordenadaMaisProxima.numero_linha}</p>
+								`;
+								L.popup()
+								.setLatLng(latlngClicada)
+								.setContent(popupContent)
+								.openOn(map);
+							});
 			
 							map.fitBounds(polyline.getBounds());
 							chegada.openPopup();
