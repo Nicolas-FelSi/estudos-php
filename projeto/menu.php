@@ -7,6 +7,50 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
   header("Location: login.php");
   exit();
 }
+//teste
+            try{
+                $total_reg = "2"; //teste
+                $pagina = "1";
+                $barra_paginacao = "";
+                $inicio = "0";
+
+                $inicio = $pagina - 1;
+                $inicio = $inicio * $total_reg;
+
+                if ($inicio < 0) {
+                  $inicio = 0;
+                }
+
+                $idUsuario = $_SESSION['id_usuario'];
+                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE fk_id_usuario = ?");
+                $sql->execute([$idUsuario]);
+                $todos = $sql->rowCount();
+
+                if (!empty($todos)) {
+                  $barra_paginacao .= "<div style='text-align:center;margin:20px 0px;'>";
+                  $total_paginas = ceil($todos / $total_reg);
+                  if ($total_paginas > 1) {
+                      for ($i = 1; $i <= $total_paginas; $i++) {
+                          if ($i == $pagina) {
+                              $barra_paginacao .= "<input type='button' value='" . $i . "' class='btn btn-primary btn-sm' />";
+                          } else {
+                              $barra_paginacao .= "<input type='button' value='" . $i . "' class='btn btn-secondary btn-sm' />";
+                          }
+                      }
+                  }
+                  $barra_paginacao .= "</div>";
+                }
+
+                $limite = "limit " . $inicio . ", " . $total_reg;
+                $sql = $todos . $limite;  //problemão
+
+            } catch (Exception $e) {
+                $erros[] = $e->getMessage();
+                $_SESSION["erros"] = $erros;
+            } finally {
+                $conexao = null;
+            }
+
 ?>
 
 <!doctype html>
@@ -27,6 +71,7 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
     </div>
     <div class="header_user">
       <i class="fa-solid fa-user"></i>
+
       <?php
         if (isset($_SESSION["nome"])) {
           echo $_SESSION["nome"];
@@ -88,45 +133,46 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         <hr>
         <div class="container mt-5">
           <ul class="list-group">
-            <?php
-              // Recupera as importações do usuário atual
-              $idUsuario = $_SESSION['id_usuario'];
-              $sql = $pdo->prepare("SELECT id_planilha, codigo, descricao FROM planilha WHERE fk_id_usuario = ?");
-              $sql->execute([$idUsuario]);
-              $importacoes = $sql->fetchAll(PDO::FETCH_ASSOC);
+          <?php
 
-              if ($importacoes) {
-                echo '<table class="table table-bordered mt-5">';
-                echo '<thead class="thead-dark">';
-                echo '<tr>';
-                echo '<th>ID</th>';
-                echo '<th>Código</th>';
-                echo '<th>Descrição</th>';
-                echo '<th>Mapa</th>';
-                echo '</tr>';
-                echo '</thead>';
-                echo '<tbody>';
-                
-                foreach ($importacoes as $importacao) {          
-                  echo '<tr>';
-                  echo '<td>' . htmlspecialchars($importacao['id_planilha']) . '</td>';
-                  echo '<td>' . htmlspecialchars($importacao['codigo']) . '</td>';
-                  echo '<td>' . htmlspecialchars($importacao['descricao']) . '</td>';
-                  echo '<td>';
-                  echo '<a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a> ';
-                  echo '<button class="btn btn-danger btn-sm" onclick="confirmDelete(' . htmlspecialchars($importacao['id_planilha']) . ')">Excluir</button>';
-                  echo '</td>';
-                  echo '</tr>';
-                }
-              
-                
-                echo '</tbody>';
-                echo '</table>';
-              } else {
-                  echo 'Nenhuma importação encontrada.';
-              }
+                // Recupera as importações do usuário atual
+                $idUsuario = $_SESSION['id_usuario'];
+                $sql = $pdo->prepare("SELECT id_planilha, codigo, descricao FROM planilha WHERE fk_id_usuario = ?");
+                $sql->execute([$idUsuario]);
+                $importacoes = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+                  if ($importacoes) {
+                    echo '<table class="table table-bordered mt-5">';
+                    echo '<thead class="thead-dark">';
+                    echo '<tr>';
+                    echo '<th>ID</th>';
+                    echo '<th>Código</th>';
+                    echo '<th>Descrição</th>';
+                    echo '<th>Mapa</th>';
+                    echo '</tr>';
+                    echo '</thead>';
+                    echo '<tbody>';
+                    
+                    foreach ($importacoes as $importacao) {          
+                      echo '<tr>';
+                      echo '<td>' . htmlspecialchars($importacao['id_planilha']) . '</td>';
+                      echo '<td>' . htmlspecialchars($importacao['codigo']) . '</td>';
+                      echo '<td>' . htmlspecialchars($importacao['descricao']) . '</td>';
+                      echo '<td>';
+                      echo '<a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a> ';
+                      echo '<button class="btn btn-danger btn-sm" onclick="confirmDelete(' . htmlspecialchars($importacao['id_planilha']) . ')">Excluir</button>';
+                      echo '</td>';
+                      echo '</tr>';
+                    }
+                    
+                    echo '</tbody>';
+                    echo '</table>';
+                  } else {
+                      echo 'Nenhuma importação encontrada.';
+                  }
             ?>
           </ul>
+          <?php echo $barra_paginacao; ?>
         </div>
         <hr>
       </div>
