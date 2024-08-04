@@ -64,15 +64,18 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
                 $_SESSION['formatoData'] = $_POST['formatoData'];
                     
                 // Execute a consulta do codigo
-                $sql = "SELECT * FROM planilha WHERE codigo = :codigo";
+                $sql = "SELECT * FROM planilha WHERE codigo = :codigo AND fk_id_usuario = :id_usuario";
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindParam(':codigo', $_SESSION['codigo']);
+                $stmt->bindParam(':id_usuario', $idUsuario);
                 $stmt->execute();
 
                 if ($stmt->rowCount() > 0) {
+                    echo "entrou";
                     $mensagem = "O código já está sendo utilizado. Informe outro.";
                     echo "<script type='text/javascript'>alert('$mensagem'); window.history.back(); </script>";
                 } else {
+                    echo "entrou no else";
                     // Insere os dados da planilha no banco de dados
                     $sql = $pdo->prepare("INSERT INTO planilha (fk_id_usuario, nome_planilha, codigo, descricao) VALUES (:fk_id_usuario, :nome_planilha, :codigo, :descricao)");
                     $sql->bindParam(':fk_id_usuario', $idUsuario);

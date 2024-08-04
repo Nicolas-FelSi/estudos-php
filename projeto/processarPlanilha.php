@@ -110,8 +110,9 @@ try {
             $velocidade = str_replace(",", ".", $velocidade);
             
             if (!empty($latitude) && !empty($longitude) && !empty($dataPosicaoFloat)){
-                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE codigo = :codigo");
+                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE codigo = :codigo AND fk_id_usuario = :id_usuario" );
                 $sql->bindParam(':codigo', $_SESSION['codigo']);
+                $sql->bindParam(':id_usuario', $_SESSION['id_usuario']);
                 $sql->execute();
 
                 $resultado = $sql->fetch(PDO::FETCH_ASSOC); 
