@@ -4,53 +4,26 @@ session_start();
 ob_start();
 
 if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
-  header("Location: login.php");
-  exit();
+    header("Location: login.php");
+    exit();
 }
-//teste
-            try{
-                $total_reg = "2"; //teste
-                $pagina = "1";
-                $barra_paginacao = "";
-                $inicio = "0";
 
-                $inicio = $pagina - 1;
-                $inicio = $inicio * $total_reg;
+// Configuração de paginação
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$records_per_page = 2; // Número de registros por página
+$offset = ($page - 1) * $records_per_page;
 
-                if ($inicio < 0) {
-                  $inicio = 0;
-                }
+// Recupera as importações do usuário atual com paginação
+$idUsuario = $_SESSION['id_usuario'];
+$sql = $pdo->prepare("SELECT id_planilha, codigo, descricao FROM planilha WHERE fk_id_usuario = ? LIMIT $records_per_page OFFSET $offset");
+$sql->execute([$idUsuario]);
+$importacoes = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-                $idUsuario = $_SESSION['id_usuario'];
-                $sql = $pdo->prepare("SELECT id_planilha FROM planilha WHERE fk_id_usuario = ?");
-                $sql->execute([$idUsuario]);
-                $todos = $sql->rowCount();
-
-                if (!empty($todos)) {
-                  $barra_paginacao .= "<div style='text-align:center;margin:20px 0px;'>";
-                  $total_paginas = ceil($todos / $total_reg);
-                  if ($total_paginas > 1) {
-                      for ($i = 1; $i <= $total_paginas; $i++) {
-                          if ($i == $pagina) {
-                              $barra_paginacao .= "<input type='button' value='" . $i . "' class='btn btn-primary btn-sm' />";
-                          } else {
-                              $barra_paginacao .= "<input type='button' value='" . $i . "' class='btn btn-secondary btn-sm' />";
-                          }
-                      }
-                  }
-                  $barra_paginacao .= "</div>";
-                }
-
-                $limite = "limit " . $inicio . ", " . $total_reg;
-                $sql = $todos . $limite;  //problemão
-
-            } catch (Exception $e) {
-                $erros[] = $e->getMessage();
-                $_SESSION["erros"] = $erros;
-            } finally {
-                $conexao = null;
-            }
-
+// Obtenha o número total de registros
+$total_sql = $pdo->prepare("SELECT COUNT(*) FROM planilha WHERE fk_id_usuario = ?");
+$total_sql->execute([$idUsuario]);
+$total_records = $total_sql->fetchColumn();
+$total_pages = ceil($total_records / $records_per_page);
 ?>
 
 <!doctype html>
@@ -71,7 +44,6 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
     </div>
     <div class="header_user">
       <i class="fa-solid fa-user"></i>
-
       <?php
         if (isset($_SESSION["nome"])) {
           echo $_SESSION["nome"];
@@ -134,45 +106,55 @@ if (!(isset($_SESSION['id_usuario']) && isset($_SESSION['nome']))) {
         <div class="container mt-5">
           <ul class="list-group">
           <?php
-
-                // Recupera as importações do usuário atual
-                $idUsuario = $_SESSION['id_usuario'];
-                $sql = $pdo->prepare("SELECT id_planilha, codigo, descricao FROM planilha WHERE fk_id_usuario = ?");
-                $sql->execute([$idUsuario]);
-                $importacoes = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-                  if ($importacoes) {
-                    echo '<table class="table table-bordered mt-5">';
-                    echo '<thead class="thead-dark">';
-                    echo '<tr>';
-                    echo '<th>ID</th>';
-                    echo '<th>Código</th>';
-                    echo '<th>Descrição</th>';
-                    echo '<th>Mapa</th>';
-                    echo '</tr>';
-                    echo '</thead>';
-                    echo '<tbody>';
-                    
-                    foreach ($importacoes as $importacao) {          
-                      echo '<tr>';
-                      echo '<td>' . htmlspecialchars($importacao['id_planilha']) . '</td>';
-                      echo '<td>' . htmlspecialchars($importacao['codigo']) . '</td>';
-                      echo '<td>' . htmlspecialchars($importacao['descricao']) . '</td>';
-                      echo '<td>';
-                      echo '<a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a> ';
-                      echo '<button class="btn btn-danger btn-sm" onclick="confirmDelete(' . htmlspecialchars($importacao['id_planilha']) . ')">Excluir</button>';
-                      echo '</td>';
-                      echo '</tr>';
-                    }
-                    
-                    echo '</tbody>';
-                    echo '</table>';
-                  } else {
-                      echo 'Nenhuma importação encontrada.';
-                  }
-            ?>
+            if ($importacoes) {
+              echo '<table class="table table-bordered mt-5">';
+              echo '<thead class="thead-dark">';
+              echo '<tr>';
+              echo '<th>ID</th>';
+              echo '<th>Código</th>';
+              echo '<th>Descrição</th>';
+              echo '<th>Mapa</th>';
+              echo '</tr>';
+              echo '</thead>';
+              echo '<tbody>';
+              
+              foreach ($importacoes as $importacao) {          
+                echo '<tr>';
+                echo '<td>' . htmlspecialchars($importacao['id_planilha']) . '</td>';
+                echo '<td>' . htmlspecialchars($importacao['codigo']) . '</td>';
+                echo '<td>' . htmlspecialchars($importacao['descricao']) . '</td>';
+                echo '<td>';
+                echo '<a href="mapa.php?id_planilha=' . htmlspecialchars($importacao['id_planilha']) . '" class="btn btn-primary btn-sm">Ver Mapa</a> ';
+                echo '<button class="btn btn-danger btn-sm" onclick="confirmDelete(' . htmlspecialchars($importacao['id_planilha']) . ')">Excluir</button>';
+                echo '</td>';
+                echo '</tr>';
+              }
+              
+              echo '</tbody>';
+              echo '</table>';
+            } else {
+                echo 'Nenhuma importação encontrada.';
+            }
+          ?>
           </ul>
-          <?php echo $barra_paginacao; ?>
+          <!-- Navegação de paginação -->
+          <nav>
+            <ul class="pagination justify-content-center">
+              <?php
+              if ($page > 1) {
+                  echo '<li class="page-item"><a class="page-link" href="menu.php?page=' . ($page - 1) . '">Anterior</a></li>';
+              }
+
+              for ($i = 1; $i <= $total_pages; $i++) {
+                  echo '<li class="page-item ' . ($i == $page ? 'active' : '') . '"><a class="page-link" href="menu.php?page=' . $i . '">' . $i . '</a></li>';
+              }
+
+              if ($page < $total_pages) {
+                  echo '<li class="page-item"><a class="page-link" href="menu.php?page=' . ($page + 1) . '">Próxima</a></li>';
+              }
+              ?>
+            </ul>
+          </nav>
         </div>
         <hr>
       </div>
